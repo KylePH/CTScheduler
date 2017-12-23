@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kyleph.ctscheduler.Controller">
+    <MenuBar prefHeight="29.0" prefWidth="193.0">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#mnuParseSchedule" text="Open schedule..."/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" onAction="#mnuSetScheduleDirectory" text="Set schedule location"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Employees">
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenRequestOffForm" text="Request Off..." />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenEditEmployeeForm" text="Edit Employee..." />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddEmployeeForm" text="Add Employee..." />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenViewEmployeesForm" text="View Employees" />
+        </Menu>
+        <Menu>
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenScheduleSettingsForm" text="Schedule settings" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddHolidayForm" text="Add Holiday" />
+        </Menu>
+    </MenuBar>
+    <BorderPane onDragDropped="#handleDragDrop">
+    </BorderPane>
+</VBox>
