@@ -22,8 +22,8 @@
             <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddEmployeeForm" text="Add Employee..." />
             <MenuItem mnemonicParsing="false" onAction="#mnuOpenViewEmployeesForm" text="View Employees" />
         </Menu>
-        <Menu>
-            <MenuItem mnemonicParsing="false" onAction="#mnuOpenScheduleSettingsForm" text="Schedule settings" />
+        <Menu mnemonicParsing="false" text="Schedule">
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenScheduleSettingsForm" text="Schedule Settings" />
             <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddHolidayForm" text="Add Holiday" />
         </Menu>
     </MenuBar>
