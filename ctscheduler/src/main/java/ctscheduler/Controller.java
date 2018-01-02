@@ -1,18 +1,23 @@
 package ctscheduler;
 
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.controlsfx.control.spreadsheet.SpreadsheetView;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
 public class Controller {
 
-    HostServices hostServices;
-    File scheduleExcelFile;
+    /*
+    -------------------------------------------------------------------------------------------------------
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FXML INITIALIZATIONS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    -------------------------------------------------------------------------------------------------------
+     */
+
+    @FXML
+    Label labelScheduleStatus;
 
     @FXML
     Label noScheduleOpenLabel;
@@ -21,10 +26,28 @@ public class Controller {
     Button btnCreateSchedule;
 
     @FXML
+    Button btnSaveSchedule;
+
+    @FXML
+    CheckBox chkboxEditMode;
+
+    @FXML
     DatePicker dpSelectScheduleWeek;
 
+    @FXML
+    SpreadsheetView spreadsheetView;
+
+
     /*
-    ============== Start Menu Options ==============
+    -------------------------------------------------------------------------------------------------------
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FXML METHODS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    -------------------------------------------------------------------------------------------------------
+     */
+
+    /*
+    ================================================
+    ================= Menu Options =================
+    ================================================
      */
 
     @FXML
@@ -91,12 +114,12 @@ public class Controller {
         System.exit(0);
     }
 
-    /*
-    ============== End Menu Options ==============
-     */
+
 
     /*
-    ============== Start Buttons ==============
+    ================================================
+    ==================== Buttons ===================
+    ================================================
      */
 
     @FXML
@@ -104,8 +127,29 @@ public class Controller {
 
     }
 
+    @FXML
+    protected void btnBuildSchedule() {
+
+    }
+
+    @FXML
+    protected void btnSaveSchedule() {
+
+    }
+
+    @FXML
+    protected void chkBoxEditModeChanged() {
+        if(chkboxEditMode.isSelected()) {
+            spreadsheetView.setEditable(true);
+        } else {
+            spreadsheetView.setEditable(false);
+        }
+    }
+
     /*
-    ============== End Buttons ==============
+    ================================================
+    ===================== Misc =====================
+    ================================================
      */
 
     @FXML
@@ -113,16 +157,21 @@ public class Controller {
 
     }
 
-    @FXML
-    protected void buttonBuildSchedule() {
+    /*
+    -------------------------------------------------------------------------------------------------------
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NON-FXML <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    -------------------------------------------------------------------------------------------------------
+     */
 
+    HostServices hostServices;
+    File scheduleExcelFile;
+
+    public void unlockScheduleControls() {
+        noScheduleOpenLabel.setVisible(false);
+        dpSelectScheduleWeek.setDisable(false);
+        btnCreateSchedule.setDisable(false);
+        chkboxEditMode.setDisable(false);
     }
-
-    @FXML
-    protected void buttonSaveSchedule() {
-
-    }
-
 
     // Receives the HostServices object associated with the application.
     // This is called from Main in the start method.
@@ -130,4 +179,14 @@ public class Controller {
         this.hostServices = hostServices;
     }
 
+    @FXML
+    public void initialize() {
+        noScheduleOpenLabel.setVisible(true);
+        spreadsheetView.setVisible(false);
+        spreadsheetView.setEditable(false);
+        dpSelectScheduleWeek.setDisable(true);
+        btnCreateSchedule.setDisable(true);
+        btnSaveSchedule.setDisable(true);
+        chkboxEditMode.setDisable(true);
+    }
 }
