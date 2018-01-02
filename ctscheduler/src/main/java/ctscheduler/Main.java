@@ -1,12 +1,9 @@
-package kyleph.ctscheduler;
+package ctscheduler;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
@@ -15,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainForm.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mainForm.fxml"));
         Parent form = loader.load();
 
         // Set the JavaFX form to accept drag and drop events.
@@ -36,10 +33,12 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.setHostServices(getHostServices());
 
-        Scene scene = new Scene(form, 600, 600);
+        Scene scene = new Scene(form);
         primaryStage.setTitle("ConTav Schedule Builder");
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(500);
         primaryStage.show();
     }
 

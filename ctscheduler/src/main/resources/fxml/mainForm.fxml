@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.spreadsheet.SpreadsheetView?>
+
+<VBox prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.Controller">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#mnuNewSchedule" text="New" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenSchedule" text="Open Schedule..." />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuSaveSchedule" text="Save" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuSaveScheduleAs" text="Save As…" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuSetScheduleDirectory" text="Set Schedule Folder..." />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuOpenPreferencesForm" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuQuit" text="Quit" />
+          </items>
+        </Menu>
+            <Menu mnemonicParsing="false" text="Employees">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#mnuOpenViewEmployeesForm" text="View Employees..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenRequestOffForm" text="Request Off..." />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenEditEmployeeForm" text="Edit Employee..." />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddEmployeeForm" text="Add Employee..." />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Schedule">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#mnuOpenSchedulePreferencesForm" text="Schedule Preferences" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenInExcel" text="Open in Excel" />
+              </items>
+            </Menu>
+      </menus>
+    </MenuBar>
+    <SplitPane dividerPositions="0.25, 0.8" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <items>
+        <AnchorPane SplitPane.resizableWithParent="false">
+               <children>
+                  <DatePicker fx:id="dpSelectScheduleWeek" layoutX="24.0" layoutY="14.0" promptText="Select schedule week..." AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+                  <Button fx:id="btnCreateSchedule" layoutX="5.0" layoutY="509.0" mnemonicParsing="false" onAction="#btnCreateSchedule" prefHeight="31.0" prefWidth="213.0" text="Create Schedule" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+               </children>
+        </AnchorPane>
+        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="-1.0" prefWidth="-1.0">
+          <content>
+            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="551.0" prefWidth="593.0">
+                     <children>
+                         <SpreadsheetView fx:id="spreadsheetView" editable="true" prefHeight="551.0" prefWidth="593.0" showColumnHeader="true" showRowHeader="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="noScheduleOpenLabel" contentDisplay="CENTER" layoutX="296.5" layoutY="259.0" text="No schedule open" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+            </AnchorPane>
+          </content>
+        </ScrollPane>
+        <AnchorPane SplitPane.resizableWithParent="false" />
+      </items>
+    </SplitPane>
+    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+      <children>
+        <Label fx:id="leftStatusLabel" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="No schedule open. Open a schedule file or create a new one." HBox.hgrow="ALWAYS">
+          <font>
+            <Font size="11.0" fx:id="x3" />
+          </font>
+          <textFill>
+            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
+          </textFill>
+        </Label>
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+        <Label fx:id="rightStatusLabel" font="$x3" maxWidth="-1.0" textFill="$x4" HBox.hgrow="NEVER" />
+      </children>
+      <padding>
+        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+      </padding>
+    </HBox>
+  </children>
+</VBox>
