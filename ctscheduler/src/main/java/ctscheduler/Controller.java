@@ -106,12 +106,12 @@ public class Controller {
 
     @FXML
     protected void mnuOpenSchedule() {
-
+        fileManager.openExcelFile("Select the schedule Excel file");
     }
 
     @FXML
     protected void mnuSetScheduleDirectory() {
-
+        fileManager.openDirectory("Select the folder that you want to store your schedules in.");
     }
 
     @FXML
@@ -123,8 +123,6 @@ public class Controller {
     protected void mnuQuit() {
         System.exit(0);
     }
-
-
 
     /*
     ================================================
@@ -173,9 +171,14 @@ public class Controller {
     -------------------------------------------------------------------------------------------------------
      */
 
-    HostServices hostServices;
+    HostServices hostServices; // This is used primarily to open the .xlsx file in Excel from a control within this app.
     File scheduleExcelFile;
+    FileManager fileManager;
 
+    /**
+     * Enables controls that interact with the SpreadSheetView control. This should be called after a spreadsheet
+     * is loaded and the SpreadSheetView is visibile and enabled.
+     */
     public void unlockScheduleControls() {
         noScheduleOpenLabel.setVisible(false);
         dpSelectScheduleWeek.setDisable(false);
@@ -183,6 +186,15 @@ public class Controller {
         chkboxEditMode.setDisable(false);
     }
 
+    /**
+     * This will open a new window on top of the main window. Made for streamlined opening of other FXML forms.
+     * @param title Title of the window.
+     * @param FXMLName Name of the FXML file associated with the window being opened.
+     * @param resizable Passed to Stage.setResizable(bool)
+     * @param height Sets the height of the window. 0 to use the default height specified by the FXML file.
+     * @param width Sets the width of the window. 0 to use the default width specified by the FXML file.
+     * @throws IOException
+     */
     public void openWindow(String title, String FXMLName, boolean resizable, int height, int width) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + FXMLName + ".fxml"));
         Parent form = loader.load();
@@ -199,12 +211,19 @@ public class Controller {
         stage.show();
     }
 
-    // Receives the HostServices object associated with the application.
-    // This is called from Main in the start method.
+    /**
+     * Receives the HostServices object associated with the application.
+     * This is called from the Main class after the controller instance is received from the FXMLLoader.
+     * Having the HostServices object is necessary for being able to open other applications in Windows.
+     */
     protected void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 
+
+    /**
+     * This is called automatically by JavaFX after all FXML elements have been initialized.
+     */
     @FXML
     public void initialize() {
         noScheduleOpenLabel.setVisible(true);
