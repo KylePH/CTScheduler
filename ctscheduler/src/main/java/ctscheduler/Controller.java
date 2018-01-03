@@ -2,10 +2,15 @@ package ctscheduler;
 
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 public class Controller {
@@ -67,6 +72,11 @@ public class Controller {
 
     @FXML
     protected void mnuOpenAddEmployeeForm() {
+        try {
+            openWindow("Add Employee", "addEmployeeForm", false, 0, 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -171,6 +181,22 @@ public class Controller {
         dpSelectScheduleWeek.setDisable(false);
         btnCreateSchedule.setDisable(false);
         chkboxEditMode.setDisable(false);
+    }
+
+    public void openWindow(String title, String FXMLName, boolean resizable, int height, int width) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + FXMLName + ".fxml"));
+        Parent form = loader.load();
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(form);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.setResizable(resizable);
+        if(width > 0)
+            stage.setWidth(width);
+        if(height > 0)
+            stage.setHeight(height);
+        stage.show();
     }
 
     // Receives the HostServices object associated with the application.

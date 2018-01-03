@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import org.controlsfx.control.CheckComboBox?>
+<?import org.controlsfx.control.ListSelectionView?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.controllers.addemployee.AddEmployeeController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="First name:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+      <Label layoutX="20.0" layoutY="48.0" text="Last name:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0" />
+      <TextField fx:id="txtFirstName" layoutX="101.0" layoutY="15.0" AnchorPane.leftAnchor="101.0" AnchorPane.topAnchor="15.0" />
+      <TextField fx:id="txtLastName" layoutX="101.0" layoutY="45.0" AnchorPane.leftAnchor="101.0" />
+      <CheckComboBox fx:id="chkcomboRoles" layoutX="101.0" layoutY="88.0" prefHeight="27.0" prefWidth="167.0" AnchorPane.leftAnchor="101.0" />
+      <Label layoutX="40.0" layoutY="93.0" text="Role(s):" AnchorPane.leftAnchor="40.0" />
+      <Button layoutX="101.0" layoutY="124.0" mnemonicParsing="false" onAction="#btnManageRoles" text="Manage roles" />
+      <Separator layoutX="279.0" layoutY="-6.0" orientation="VERTICAL" prefHeight="408.0" prefWidth="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="279.0" AnchorPane.topAnchor="0.0" />
+      <Label layoutX="477.0" layoutY="12.0" text="Availability" textAlignment="CENTER" underline="true" />
+      <ListSelectionView fx:id="availabilityListSelection" layoutX="291.0" layoutY="42.0" prefHeight="237.0" prefWidth="462.0" />
+      <Button layoutX="98.0" layoutY="279.0" mnemonicParsing="false" onAction="#btnAddEmployee" text="Add Employee" />
+      <Label layoutX="42.0" layoutY="180.0" text="Active:" />
+      <CheckBox fx:id="chkboxActive" layoutX="101.0" layoutY="180.0" mnemonicParsing="false" selected="true" />
+   </children>
+</AnchorPane>
