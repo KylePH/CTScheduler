@@ -18,6 +18,7 @@ public class FileManager {
     private boolean isWindows;
     private File appDataFolder;
     private File excelFile;
+    private File scheduleDirectory;
     private Path settingsTxt;
     private Path employeesTxt;
     private Path rolesTxt;
@@ -70,7 +71,7 @@ public class FileManager {
             return;
         }
 
-        // TODO: set excelFile to the last result in the recentfiles.txt file.
+        // TODO: set excelFile to the last result in the recentfiles.txt file right here.
 
         try {
             settings = Files.readAllLines(settingsTxt);
@@ -125,13 +126,13 @@ public class FileManager {
         saveDataHelper(recentFilesTxt, temp);
     }
 
-    // TODO: fix this to set directory to global variable in here. Wasn't thinking when I made this real quick
+    // TODO: Save scheduleDirectory somewhere in settings.txt
     // Will set the directory for storing all of the schedule files and save the path somewhere in the settings txt.
     // Should be a void method.
-    public File setDirectory(String title) {
+    public void setDirectory(String title) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(title);
-        return directoryChooser.showDialog(new Stage());
+        scheduleDirectory = directoryChooser.showDialog(new Stage());
     }
 
     /**
