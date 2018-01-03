@@ -111,7 +111,7 @@ public class Controller {
 
     @FXML
     protected void mnuSetScheduleDirectory() {
-        fileManager.openDirectory("Select the folder that you want to store your schedules in.");
+        fileManager.setDirectory("Select the folder that you want to store your schedules in.");
     }
 
     @FXML
