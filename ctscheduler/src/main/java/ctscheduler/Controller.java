@@ -233,5 +233,7 @@ public class Controller {
         btnCreateSchedule.setDisable(true);
         btnSaveSchedule.setDisable(true);
         chkboxEditMode.setDisable(true);
+
+        fileManager = new FileManager();
     }
 }

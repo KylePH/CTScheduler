@@ -46,6 +46,10 @@ public class FileManager {
             appDataFolder = new File(System.getProperty("user.home") + "/Library/Application Support/ScheduleBuilder");
         }
 
+        if(!appDataFolder.exists()) {
+            appDataFolder.mkdir();
+        }
+
         settingsTxt = Paths.get(appDataFolder.getAbsolutePath() + "/settings.txt");
         employeesTxt = Paths.get(appDataFolder.getAbsolutePath() + "/employees.txt");
         rolesTxt = Paths.get(appDataFolder.getAbsolutePath() + "/roles.txt");
@@ -71,18 +75,24 @@ public class FileManager {
             return;
         }
 
-        // TODO: set excelFile to the last result in the recentfiles.txt file right here.
+
+
 
         try {
             settings = Files.readAllLines(settingsTxt);
             employees = Files.readAllLines(employeesTxt);
             roles = Files.readAllLines(rolesTxt);
+            recentFiles = new ArrayList<>();
             List<String> temp = Files.readAllLines(recentFilesTxt);
             for(int i = 0; i < temp.size(); i++) {
                 recentFiles.add(new File(temp.get(i)));
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(!recentFiles.isEmpty()) {
+            excelFile = recentFiles.get(recentFiles.size() - 1);
         }
     }
 
@@ -117,11 +127,16 @@ public class FileManager {
                 new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx")
         );
         File file = fileChooser.showOpenDialog(new Stage());
+        if(file == null) {
+            return;
+        }
         excelFile = file; // set the excelFile global variable to this.
         recentFiles.add(file);
         List<String> temp = new ArrayList<>();
-        for(int i = 0; i < recentFiles.size(); i++) {
-            temp.add(recentFiles.get(i).getAbsolutePath());
+        if(!recentFiles.isEmpty()) {
+            for (int i = 0; i < recentFiles.size(); i++) {
+                temp.add(recentFiles.get(i).getAbsolutePath());
+            }
         }
         saveDataHelper(recentFilesTxt, temp);
     }
