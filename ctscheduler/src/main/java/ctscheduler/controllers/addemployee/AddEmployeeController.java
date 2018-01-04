@@ -1,18 +1,20 @@
 package ctscheduler.controllers.addemployee;
 
+import ctscheduler.Role;
+import ctscheduler.Shift;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.ListSelectionView;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AddEmployeeController {
+
+    List<Shift> shifts;
 
     @FXML
     ListSelectionView availabilityListSelection;
@@ -30,6 +32,25 @@ public class AddEmployeeController {
     CheckComboBox chkcomboRoles;
 
     @FXML
+    DatePicker datePickerDayOff;
+
+    @FXML
+    DatePicker datePickerStartDate;
+
+    @FXML
+    DatePicker datePickerEndDate;
+
+    @FXML
+    ListView listViewDaysOff;
+
+    @FXML
+    Button btnAddDayOff;
+
+    private DateTimeFormatter dateFormat;
+    ObservableList<String> daysOffList;
+
+
+    @FXML
     protected void btnAddEmployee() {
 
     }
@@ -40,6 +61,19 @@ public class AddEmployeeController {
     }
 
     @FXML
+    protected void btnAddDayOffAction() {
+        String date = dateFormat.format(datePickerDayOff.getValue());
+        daysOffList.add(date);
+        listViewDaysOff.setItems(daysOffList);
+        btnAddDayOff.setDisable(true);
+    }
+
+    @FXML
+    protected void datePickerDayOffAction() {
+        btnAddDayOff.setDisable(false);
+    }
+
+    @FXML
     public void initialize() {
         Label sourceHeaderLabel = new Label();
         Label targetHeaderLabel = new Label();
@@ -47,23 +81,18 @@ public class AddEmployeeController {
         targetHeaderLabel.setText("Available");
         availabilityListSelection.setSourceHeader(sourceHeaderLabel);
         availabilityListSelection.setTargetHeader(targetHeaderLabel);
+        dateFormat = DateTimeFormatter.ofPattern("EEEE MM/dd/yyyy");
+        daysOffList = FXCollections.observableArrayList();
 
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
         ObservableList<String> shiftList = FXCollections.observableArrayList();
-        shiftList.add("Monday Lunch");
-        shiftList.add("Monday Dinner");
-        shiftList.add("Tuesday Lunch");
-        shiftList.add("Tuesday Dinner");
-        shiftList.add("Wednesday Lunch");
-        shiftList.add("Wednesday Dinner");
-        shiftList.add("Thursday Lunch");
-        shiftList.add("Thursday Dinner");
-        shiftList.add("Friday Lunch");
-        shiftList.add("Friday Dinner");
-        shiftList.add("Saturday Lunch");
-        shiftList.add("Saturday Dinner");
-        shiftList.add("Sunday Lunch");
-        shiftList.add("Sunday Dinner");
 
+        for(Shift shift : shifts) {
+            shiftList.add(shift.toString());
+        }
         availabilityListSelection.setSourceItems(shiftList);
     }
 }

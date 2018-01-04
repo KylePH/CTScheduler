@@ -1,5 +1,6 @@
 package ctscheduler;
 
+import ctscheduler.controllers.addemployee.AddEmployeeController;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,9 @@ import org.controlsfx.control.spreadsheet.SpreadsheetView;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -73,7 +77,18 @@ public class Controller {
     @FXML
     protected void mnuOpenAddEmployeeForm() {
         try {
-            openWindow("Add Employee", "addEmployeeForm", false, 0, 0);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmployeeForm.fxml"));
+            Parent form = loader.load();
+
+            AddEmployeeController addEmployeeController = loader.getController();
+            addEmployeeController.setShifts(shifts);
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(form);
+            stage.setTitle("Add Employee");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -174,6 +189,9 @@ public class Controller {
     HostServices hostServices; // This is used primarily to open the .xlsx file in Excel from a control within this app.
     File scheduleExcelFile;
     FileManager fileManager;
+    List<Role> roles;
+    List<Shift> shifts;
+    final private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM.dd.yyyy");
 
     /**
      * Enables controls that interact with the SpreadSheetView control. This should be called after a spreadsheet
@@ -233,7 +251,26 @@ public class Controller {
         btnCreateSchedule.setDisable(true);
         btnSaveSchedule.setDisable(true);
         chkboxEditMode.setDisable(true);
+        dpSelectScheduleWeek.setShowWeekNumbers(true);
 
         fileManager = new FileManager();
+
+        // populate shifts
+        shifts = new ArrayList<>();
+        shifts.add(new Shift(Day.MONDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.MONDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.TUESDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.TUESDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.WEDNESDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.WEDNESDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.THURSDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.THURSDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.FRIDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.FRIDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.SATURDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.SATURDAY, TimeOfDay.DINNER));
+        shifts.add(new Shift(Day.SUNDAY, TimeOfDay.LUNCH));
+        shifts.add(new Shift(Day.SUNDAY, TimeOfDay.DINNER));
+
     }
 }

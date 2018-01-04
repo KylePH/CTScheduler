@@ -9,15 +9,10 @@ public class Role {
     // I'm thinking about making a class called Day and have another control where you flip through each day
     // and specify how many of each role should be working each shift in that day.
 
-    class Shift2 {
-        int numPer;
-
-    }
-
     String name;
     HashMap<Shift, Integer> numPerShift;
 
-    public Role(String name, HashMap<String, Integer> numPerShift) {
+    public Role(String name, HashMap<Shift, Integer> numPerShift) {
 
     }
 
