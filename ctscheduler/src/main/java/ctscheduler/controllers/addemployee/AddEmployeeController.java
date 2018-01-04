@@ -1,5 +1,6 @@
 package ctscheduler.controllers.addemployee;
 
+import ctscheduler.Employee;
 import ctscheduler.Role;
 import ctscheduler.Shift;
 import javafx.collections.FXCollections;
@@ -47,17 +48,51 @@ public class AddEmployeeController {
     Button btnAddDayOff;
 
     private DateTimeFormatter dateFormat;
+
     ObservableList<String> daysOffList;
 
 
     @FXML
     protected void btnAddEmployee() {
 
+        if(txtFirstName.getText().equals("")
+                || txtLastName.getText().equals("")
+                || chkcomboRoles.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Some required fields are empty.",
+                    ButtonType.OK);
+            alert.showAndWait();
+        }
+
+        Employee employee = new Employee(
+                txtFirstName.getText(),
+                txtLastName.getText(),
+                chkcomboRoles.getItems(),
+                availabilityListSelection.getTargetItems(),
+                chkboxActive.isSelected()
+        );
+
+        List<String> daysOffItems = listViewDaysOff.getItems();
+        if(!daysOffItems.isEmpty()) {
+            employee.setDaysOff(daysOffItems);
+        }
+
+        DateTimeFormatter tempDateFormat = DateTimeFormatter.ofPattern("MM.dd.yy");
+
+        if(datePickerStartDate.getValue() != null) {
+            employee.setStartDate(tempDateFormat.format(datePickerStartDate.getValue()));
+        }
+
+        if(datePickerEndDate.getValue() != null) {
+            employee.setEndDate(tempDateFormat.format(datePickerEndDate.getValue()));
+        }
+
+        employee.save();
     }
 
     @FXML
     protected void btnManageRoles() {
-
+        // TODO: populate chkcomboRoles with roles.
     }
 
     @FXML
@@ -93,6 +128,9 @@ public class AddEmployeeController {
         for(Shift shift : shifts) {
             shiftList.add(shift.toString());
         }
+
         availabilityListSelection.setSourceItems(shiftList);
     }
+
+
 }
