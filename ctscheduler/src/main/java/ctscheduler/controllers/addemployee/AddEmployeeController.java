@@ -47,6 +47,9 @@ public class AddEmployeeController {
     @FXML
     Button btnAddDayOff;
 
+    @FXML
+    ComboBox comboBoxRating;
+
     private DateTimeFormatter dateFormat;
 
     ObservableList<String> daysOffList;
@@ -69,6 +72,7 @@ public class AddEmployeeController {
                 txtLastName.getText(),
                 chkcomboRoles.getItems(),
                 availabilityListSelection.getTargetItems(),
+                (int) comboBoxRating.getValue(),
                 chkboxActive.isSelected()
         );
 
@@ -118,6 +122,12 @@ public class AddEmployeeController {
         availabilityListSelection.setTargetHeader(targetHeaderLabel);
         dateFormat = DateTimeFormatter.ofPattern("EEEE MM/dd/yyyy");
         daysOffList = FXCollections.observableArrayList();
+
+        ObservableList<Integer> ratingList = FXCollections.observableArrayList();
+        for(int x = 0; x < 10; x++) {
+            ratingList.add(x + 1);
+        }
+        comboBoxRating.setItems(ratingList);
 
     }
 

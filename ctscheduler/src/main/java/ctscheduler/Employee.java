@@ -12,12 +12,14 @@ public class Employee {
     boolean active;
     String startDate;
     String endDate;
+    int rating;
 
-    public Employee(String firstName, String lastName, List<Role> role, List<Shift> availability, boolean active) {
+    public Employee(String firstName, String lastName, List<Role> role, List<Shift> availability, int rating, boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.availability = availability;
+        this.rating = rating;
         this.active = active;
     }
 
