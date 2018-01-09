@@ -12,6 +12,7 @@ import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.ListSelectionView;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddEmployeeController {
@@ -26,6 +27,12 @@ public class AddEmployeeController {
 
     @FXML
     TextField txtLastName;
+
+    @FXML
+    TextField textFieldHourlyRate;
+
+    @FXML
+    TextField textFieldPreferredWeeklyHours;
 
     @FXML
     CheckBox chkboxActive;
@@ -57,13 +64,17 @@ public class AddEmployeeController {
 
     FileManager fileManager;
 
-
+    /**
+     * Retrieves data from all user input controls and sets them to the appropriate fields within the Employee
+     * class. Some data is reformatted. Then calls on the FileManager class to save the employee to a text file.
+     */
     @FXML
     protected void btnAddEmployee() {
 
         if(txtFirstName.getText().equals("")
                 || txtLastName.getText().equals("")
-                || chkcomboRoles.getItems().isEmpty()) {
+                || chkcomboRoles.getItems().isEmpty()
+                || comboBoxRating.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR,
                     "Some required fields are empty.",
                     ButtonType.OK);
@@ -76,15 +87,22 @@ public class AddEmployeeController {
                 chkcomboRoles.getItems(),
                 availabilityListSelection.getTargetItems(),
                 (int) comboBoxRating.getValue(),
+                Float.valueOf(textFieldHourlyRate.getText()),
+                Integer.valueOf(textFieldPreferredWeeklyHours.getText()),
                 chkboxActive.isSelected()
         );
 
         List<String> daysOffItems = listViewDaysOff.getItems();
         if(!daysOffItems.isEmpty()) {
-            employee.setDaysOff(daysOffItems);
+            // Manually change the date format ("EEEE MM/dd/yyyy" to "MM.dd.yyyy")
+            ArrayList<String> tempList = new ArrayList<>();
+            for(String str : daysOffItems) {
+                tempList.add(str.substring(str.length() - 11, str.length() - 1));
+            }
+            employee.setDaysOff(tempList);
         }
 
-        DateTimeFormatter tempDateFormat = DateTimeFormatter.ofPattern("MM.dd.yy");
+        DateTimeFormatter tempDateFormat = DateTimeFormatter.ofPattern("MM.dd.yyyy");
 
         if(datePickerStartDate.getValue() != null) {
             employee.setStartDate(tempDateFormat.format(datePickerStartDate.getValue()));

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CTScheduler.iml" filepath="$PROJECT_DIR$/CTScheduler.iml" />
       <module fileurl="file://$PROJECT_DIR$/ctscheduler/ctscheduler.iml" filepath="$PROJECT_DIR$/ctscheduler/ctscheduler.iml" />
     </modules>
   </component>

@@ -12,7 +12,7 @@
 <?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.ListSelectionView?>
 
-<AnchorPane fx:id="datepickerEndDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.controllers.addemployee.AddEmployeeController">
+<AnchorPane fx:id="datepickerEndDate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.controllers.addemployee.AddEmployeeController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="First name:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
       <Label layoutX="20.0" layoutY="48.0" text="Last name:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0" />
@@ -24,21 +24,25 @@
       <Separator layoutX="279.0" layoutY="-6.0" orientation="VERTICAL" prefHeight="408.0" prefWidth="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="279.0" AnchorPane.topAnchor="0.0" />
       <Label layoutX="477.0" layoutY="12.0" text="Availability" textAlignment="CENTER" underline="true" />
       <ListSelectionView fx:id="availabilityListSelection" layoutX="291.0" layoutY="42.0" prefHeight="237.0" prefWidth="462.0" />
-      <Button layoutX="457.0" layoutY="493.0" mnemonicParsing="false" onAction="#btnAddEmployee" text="Add Employee" />
+      <Button layoutX="459.0" layoutY="528.0" mnemonicParsing="false" onAction="#btnAddEmployee" text="Add Employee" AnchorPane.bottomAnchor="14.268040225158387" />
       <Label layoutX="42.0" layoutY="180.0" text="Active:" />
       <CheckBox fx:id="chkboxActive" layoutX="101.0" layoutY="180.0" mnemonicParsing="false" selected="true" />
       <DatePicker fx:id="datePickerDayOff" layoutX="101.0" layoutY="249.0" onAction="#datePickerDayOffAction" prefHeight="27.0" prefWidth="115.0" AnchorPane.leftAnchor="101.0" />
       <Label layoutX="16.0" layoutY="254.0" text="Add day off:" AnchorPane.leftAnchor="16.0" />
       <Button fx:id="btnAddDayOff" disable="true" layoutX="225.0" layoutY="249.0" mnemonicParsing="false" onAction="#btnAddDayOffAction" text="Add" AnchorPane.leftAnchor="225.0" />
       <Separator layoutX="1.0" layoutY="222.0" prefHeight="3.0" prefWidth="279.0" />
-      <ListView fx:id="listViewDaysOff" layoutX="41.0" layoutY="307.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="41.0" />
+      <ListView fx:id="listViewDaysOff" layoutX="41.0" layoutY="307.0" prefHeight="245.0" prefWidth="201.0" AnchorPane.leftAnchor="41.0" />
       <Label layoutX="42.0" layoutY="290.0" text="Days off" AnchorPane.leftAnchor="42.0" />
       <DatePicker fx:id="datePickerStartDate" layoutX="510.0" layoutY="294.0" />
       <Label layoutX="363.0" layoutY="299.0" text="(Optional) Start date:" />
       <Label layoutX="366.0" layoutY="342.0" text="(Optional) End date:" />
       <DatePicker fx:id="datePickerEndDate" layoutX="510.0" layoutY="337.0" />
       <Separator layoutX="281.0" layoutY="383.0" prefHeight="3.0" prefWidth="479.0" />
-      <Label layoutX="447.0" layoutY="407.0" text="Rating:" />
+      <Label layoutX="392.0" layoutY="407.0" text="Performance rating:" />
       <ComboBox fx:id="comboBoxRating" layoutX="506.0" layoutY="402.0" prefHeight="27.0" prefWidth="76.0" />
+      <Label layoutX="434.0" layoutY="444.0" text="Hourly rate:" />
+      <Label layoutX="373.0" layoutY="477.0" text="Preferred weekly hours:" />
+      <TextField fx:id="textFieldHourlyRate" layoutX="506.0" layoutY="440.0" prefHeight="26.0" prefWidth="76.0" AnchorPane.bottomAnchor="101.27834946458755" />
+      <TextField fx:id="textFieldPreferredWeeklyHours" layoutX="506.0" layoutY="473.0" prefHeight="26.0" prefWidth="76.0" AnchorPane.bottomAnchor="68.27834946458755" />
    </children>
 </AnchorPane>

@@ -192,6 +192,7 @@ public class Controller {
     FileManager fileManager;
     List<Role> roles;
     List<Shift> shifts;
+    List<Employee> employees;
     final private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM.dd.yyyy");
 
     /**
@@ -207,6 +208,7 @@ public class Controller {
 
     /**
      * This will open a new window on top of the main window. Made for streamlined opening of other FXML forms.
+     * Only use this method if no additional information or objects need to be sent to the FXML controller.
      * @param title Title of the window.
      * @param FXMLName Name of the FXML file associated with the window being opened.
      * @param resizable Passed to Stage.setResizable(bool)

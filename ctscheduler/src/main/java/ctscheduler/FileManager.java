@@ -25,9 +25,12 @@ public class FileManager {
     private Path recentFilesTxt;
     private List<File> recentFiles;
     private List<String> settings;
-    private List<String> employees;
-    private List<String> roles;
+    private List<Employee> employees;
+    private List<Role> roles;
 
+    /**
+     * This constructor calls the parseAppData() method which brings all saved data into the program during runtime.
+     */
     public FileManager() {
         isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         parseAppData();
@@ -80,8 +83,8 @@ public class FileManager {
 
         try {
             settings = Files.readAllLines(settingsTxt);
-            employees = Files.readAllLines(employeesTxt);
-            roles = Files.readAllLines(rolesTxt);
+            //employees = Files.readAllLines(employeesTxt);
+            //roles = Files.readAllLines(rolesTxt);
             recentFiles = new ArrayList<>();
             List<String> temp = Files.readAllLines(recentFilesTxt);
             for(int i = 0; i < temp.size(); i++) {
@@ -144,6 +147,10 @@ public class FileManager {
     // TODO: Save scheduleDirectory somewhere in settings.txt
     // Will set the directory for storing all of the schedule files and save the path somewhere in the settings txt.
     // Should be a void method.
+    /**
+     * Prompts the user to select the working directory (or workspace) for all schedule Excel files.
+     * @param title Window title for the directory chooser dialog.
+     */
     public void setDirectory(String title) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(title);
@@ -156,8 +163,9 @@ public class FileManager {
      */
     public void saveData() {
         saveDataHelper(settingsTxt, settings);
-        saveDataHelper(employeesTxt, employees);
-        saveDataHelper(rolesTxt, roles);
+        //saveDataHelper(employeesTxt, employees);
+        //saveDataHelper(rolesTxt, roles);
+        // TODO: These two calls
     }
 
     /**
@@ -178,9 +186,26 @@ public class FileManager {
         }
     }
 
+    /**
+     * Loads employee into the FileManager and saves all current data to text files in the AppData folder.
+     * @param employee Employee to be added and saved.
+     */
     public void saveEmployee(Employee employee) {
+        employees.add(employee);
+        saveData();
+    }
+
+
+    // TODO: These two methods
+    /*
+    public Employee parseEmployeeText() {
 
     }
+
+    public Role parseRoleText() {
+
+    }
+    */
 
     /**
      * @return The last opened Excel (.xlsx) File.

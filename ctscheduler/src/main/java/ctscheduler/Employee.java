@@ -13,13 +13,17 @@ public class Employee {
     String startDate;
     String endDate;
     int rating;
+    int preferredWeeklyHours;
+    float hourlyRate;
 
-    public Employee(String firstName, String lastName, List<Role> role, List<Shift> availability, int rating, boolean active) {
+    public Employee(String firstName, String lastName, List<Role> role, List<Shift> availability, int rating, float hourlyRate, int preferredWeeklyHours, boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.availability = availability;
         this.rating = rating;
+        this.hourlyRate = hourlyRate;
+        this.preferredWeeklyHours = preferredWeeklyHours;
         this.active = active;
     }
 
@@ -27,7 +31,7 @@ public class Employee {
         this.startDate = startDate;
     }
 
-    public void setEndDate(String startDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -39,10 +43,24 @@ public class Employee {
         fileManager.saveEmployee(this);
     }
 
+    /**
+     * Returns a string containing all information regarding a single employee. Each field of information is
+     * separated by a semicolon (;) followed by one space. If a field of information contains more than one item,
+     * those items are separated by a comma (,) followed by one space.
+     *
+     * The order the information is stored is as follows:
+     * first name; last name; role(s); availability (ex: "Friday Lunch"); rating (1 - 10); hourly rate (float);
+     * preferred weekly hours (int); active (boolean); start date (mm.dd.yyyy); end date (mm.dd.yyyy); days off
+     * @return Formatted string containing all employee information.
+     */
     @Override
     public String toString() {
         String s = "";
+
+        // add first name
         s += firstName + "; ";
+
+        // add last name
         s += lastName + "; ";
 
         // add all roles separated by commas
@@ -63,10 +81,32 @@ public class Employee {
         avail = avail.substring(0, avail.length() - 1);
         s += avail + "; ";
 
+        // add performance rating
         s += rating + "; ";
 
+        // add hourly rate
+        s += hourlyRate + "; ";
+
+        // add preferred weekly hours
+        s += preferredWeeklyHours + "; ";
+
+        // add active
         s += active + "; ";
 
+        // add start date
+        s += startDate + "; ";
+
+        // add end date
+        s += endDate + "; ";
+
+        // add days off
+        String days = "";
+        for(String str : daysOff) {
+            days += str + ", ";
+        }
+        days.trim();
+        days = days.substring(0, days.length() - 1);
+        s += days;
 
         return s;
     }

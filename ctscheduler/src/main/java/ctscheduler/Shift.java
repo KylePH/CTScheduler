@@ -10,7 +10,6 @@ public class Shift {
         this.day = day;
         this.timeOfDay = timeOfDay;
 
-
         // Construct the name String
         name = "";
 
