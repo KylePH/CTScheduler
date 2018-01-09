@@ -1,6 +1,7 @@
 package ctscheduler.controllers.addemployee;
 
 import ctscheduler.Employee;
+import ctscheduler.FileManager;
 import ctscheduler.Role;
 import ctscheduler.Shift;
 import javafx.collections.FXCollections;
@@ -54,6 +55,8 @@ public class AddEmployeeController {
 
     ObservableList<String> daysOffList;
 
+    FileManager fileManager;
+
 
     @FXML
     protected void btnAddEmployee() {
@@ -91,7 +94,7 @@ public class AddEmployeeController {
             employee.setEndDate(tempDateFormat.format(datePickerEndDate.getValue()));
         }
 
-        employee.save();
+        employee.save(fileManager);
     }
 
     @FXML
@@ -140,6 +143,10 @@ public class AddEmployeeController {
         }
 
         availabilityListSelection.setSourceItems(shiftList);
+    }
+
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
 

@@ -172,6 +172,14 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(writtenFile == null) {
+            System.err.println("Failed to write file " + saveFile);
+        }
+    }
+
+    public void saveEmployee(Employee employee) {
+
     }
 
     /**

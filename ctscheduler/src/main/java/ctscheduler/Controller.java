@@ -82,6 +82,7 @@ public class Controller {
 
             AddEmployeeController addEmployeeController = loader.getController();
             addEmployeeController.setShifts(shifts);
+            addEmployeeController.setFileManager(fileManager);
 
             Stage stage = new Stage();
             Scene scene = new Scene(form);

@@ -35,7 +35,39 @@ public class Employee {
         this.daysOff = daysOff;
     }
 
-    public void save() {
-        // TODO
+    public void save(FileManager fileManager) {
+        fileManager.saveEmployee(this);
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+        s += firstName + "; ";
+        s += lastName + "; ";
+
+        // add all roles separated by commas
+        String roles = "";
+        for(Role roll : role) {
+            roles += roll.toString() + ", ";
+        }
+        roles.trim();
+        roles = roles.substring(0, roles.length() - 1);
+        s += roles + "; ";
+
+        // add all available shifts separated by commas
+        String avail = "";
+        for(Shift shift : availability) {
+            avail += shift.toString() + ", ";
+        }
+        avail.trim();
+        avail = avail.substring(0, avail.length() - 1);
+        s += avail + "; ";
+
+        s += rating + "; ";
+
+        s += active + "; ";
+
+
+        return s;
     }
 }
