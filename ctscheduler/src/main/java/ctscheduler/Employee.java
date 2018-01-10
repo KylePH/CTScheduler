@@ -49,7 +49,7 @@ public class Employee {
      * those items are separated by a comma (,) followed by one space.
      *
      * The order the information is stored is as follows:
-     * first name; last name; role(s); availability (ex: "Friday Lunch"); rating (1 - 10); hourly rate (float);
+     * first name; last name; role(s); availability (ex: "Friday Lunch"); rating (int 1 - 10); hourly rate (float);
      * preferred weekly hours (int); active (boolean); start date (mm.dd.yyyy); end date (mm.dd.yyyy); days off
      * @return Formatted string containing all employee information.
      */
@@ -58,10 +58,10 @@ public class Employee {
         String s = "";
 
         // add first name
-        s += firstName + "; ";
+        s += "firstName: " + firstName + "; ";
 
         // add last name
-        s += lastName + "; ";
+        s += "lastName: " + lastName + "; ";
 
         // add all roles separated by commas
         String roles = "";
@@ -70,7 +70,7 @@ public class Employee {
         }
         roles.trim();
         roles = roles.substring(0, roles.length() - 1);
-        s += roles + "; ";
+        s += "roles: " + roles + "; ";
 
         // add all available shifts separated by commas
         String avail = "";
@@ -79,25 +79,25 @@ public class Employee {
         }
         avail.trim();
         avail = avail.substring(0, avail.length() - 1);
-        s += avail + "; ";
+        s += "availability: " + avail + "; ";
 
         // add performance rating
-        s += rating + "; ";
+        s += "rating: " + rating + "; ";
 
         // add hourly rate
-        s += hourlyRate + "; ";
+        s += "hourlyRate: " + hourlyRate + "; ";
 
         // add preferred weekly hours
-        s += preferredWeeklyHours + "; ";
+        s += "preferredWeeklyHours: " + preferredWeeklyHours + "; ";
 
         // add active
-        s += active + "; ";
+        s += "active: " + active + "; ";
 
         // add start date
-        s += startDate + "; ";
+        s += "startDate: " + startDate + "; ";
 
         // add end date
-        s += endDate + "; ";
+        s += "endDate: " + endDate + "; ";
 
         // add days off
         String days = "";
@@ -106,7 +106,7 @@ public class Employee {
         }
         days.trim();
         days = days.substring(0, days.length() - 1);
-        s += days;
+        s += "daysOff: " + days + ";";
 
         return s;
     }

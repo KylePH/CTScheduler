@@ -197,6 +197,7 @@ public class FileManager {
 
 
     // TODO: These two methods
+    // I've been thinking of a solution to these problems
     /*
     public Employee parseEmployeeText() {
 
@@ -206,6 +207,78 @@ public class FileManager {
 
     }
     */
+
+    private List<Employee> parseEmployeeText() {
+        List<String> lines = null;
+        List<Employee> employeeLocal = new ArrayList<>();
+        try {
+            lines = Files.readAllLines(employeesTxt);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // The order the information is stored is as follows:
+        // first name; last name; role(s); availability (ex: "Friday Lunch"); rating (1 - 10); hourly rate (float);
+        // preferred weekly hours (int); active (boolean); start date (mm.dd.yyyy); end date (mm.dd.yyyy); days off
+        for(String line : lines) {
+
+            String first            = getInfo("firstName");
+            String last             = getInfo("lastName");
+            List<Role> roleLocal    = getRolesFromList(getInfoList("roles"));
+            List<Shift> avail       = getShiftsFromList(getInfoList("availability"));
+            int rating              = Integer.valueOf(getInfo("rating"));
+            float hourlyRate        = Float.valueOf(getInfo("hourlyRate"));
+            int weeklyHours         = Integer.valueOf(getInfo("preferredWeeklyHours"));
+            boolean active          = Boolean.valueOf(getInfo("active"));
+            String startDate        = (String) getInfo("startDate");
+            String endDate          = (String) getInfo("endDate");
+            List<String> daysOff    = getInfoList("daysOff");
+
+            Employee emp = new Employee(
+                    first,
+                    last,
+                    roleLocal,
+                    avail,
+                    rating,
+                    hourlyRate,
+                    weeklyHours,
+                    active
+            );
+            //setstartdate etc
+            employeeLocal.add(emp);
+        }
+
+        return employeeLocal;
+    }
+
+    //TODO
+    private List<Role> parseRoleText() {
+
+        return new ArrayList<>();
+    }
+
+    //TODO
+    private String getInfo(String tag) {
+
+        return "";
+    }
+
+    //TODO
+    private List<String> getInfoList(String tag) {
+
+        return new ArrayList<>();
+    }
+
+    //TODO
+    private List<Role> getRolesFromList(List<String> strs) {
+        return new ArrayList<>();
+    }
+
+    //TODO
+    private List<Shift> getShiftsFromList(List<String> strs) {
+        return new ArrayList<>();
+    }
 
     /**
      * @return The last opened Excel (.xlsx) File.
