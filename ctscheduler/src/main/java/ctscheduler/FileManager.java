@@ -26,7 +26,6 @@ public class FileManager {
     private List<File> recentFiles;
     private List<String> settings;
     private List<Employee> employees;
-    private List<Role> roles;
 
     /**
      * This constructor calls the parseAppData() method which brings all saved data into the program during runtime.
@@ -196,18 +195,11 @@ public class FileManager {
     }
 
 
-    // TODO: These two methods
-    // I've been thinking of a solution to these problems
-    /*
-    public Employee parseEmployeeText() {
-
-    }
-
-    public Role parseRoleText() {
-
-    }
-    */
-
+    /**
+     * Reads each line from the employeesTxt file, and with each line the method then creates one employee object with
+     * its fields being filled with the provided data. Then adds that employee to an ArrayList containing type Employee.
+     * @return An ArrayList filled with each Employee object contained within the employees text file.
+     */
     private List<Employee> parseEmployeeText() {
         List<String> lines = null;
         List<Employee> employeeLocal = new ArrayList<>();
@@ -223,17 +215,17 @@ public class FileManager {
         // preferred weekly hours (int); active (boolean); start date (mm.dd.yyyy); end date (mm.dd.yyyy); days off
         for(String line : lines) {
 
-            String first            = getInfo("firstName");
-            String last             = getInfo("lastName");
-            List<Role> roleLocal    = getRolesFromList(getInfoList("roles"));
-            List<Shift> avail       = getShiftsFromList(getInfoList("availability"));
-            int rating              = Integer.valueOf(getInfo("rating"));
-            float hourlyRate        = Float.valueOf(getInfo("hourlyRate"));
-            int weeklyHours         = Integer.valueOf(getInfo("preferredWeeklyHours"));
-            boolean active          = Boolean.valueOf(getInfo("active"));
-            String startDate        = (String) getInfo("startDate");
-            String endDate          = (String) getInfo("endDate");
-            List<String> daysOff    = getInfoList("daysOff");
+            String first            = getInfo(line, "firstName");
+            String last             = getInfo(line, "lastName");
+            List<Role> roleLocal    = getRolesList(getInfoList(line, "roles"));
+            List<Shift> avail       = getShiftsList(getInfoList(line, "availability"));
+            int rating              = Integer.valueOf(getInfo(line, "rating"));
+            float hourlyRate        = Float.valueOf(getInfo(line, "hourlyRate"));
+            int weeklyHours         = Integer.valueOf(getInfo(line, "preferredWeeklyHours"));
+            boolean active          = Boolean.valueOf(getInfo(line, "active"));
+            String startDate        = getInfo(line, "startDate");
+            String endDate          = getInfo(line, "endDate");
+            List<String> daysOff    = getInfoList(line, "daysOff");
 
             Employee emp = new Employee(
                     first,
@@ -245,7 +237,19 @@ public class FileManager {
                     weeklyHours,
                     active
             );
-            //setstartdate etc
+
+            if(startDate != null) {
+                emp.setStartDate(startDate);
+            }
+
+            if(endDate != null) {
+                emp.setEndDate(endDate);
+            }
+
+            if (!daysOff.isEmpty()) {
+                emp.setDaysOff(daysOff);
+            }
+
             employeeLocal.add(emp);
         }
 
@@ -258,26 +262,67 @@ public class FileManager {
         return new ArrayList<>();
     }
 
-    //TODO
-    private String getInfo(String tag) {
+    /**
+     * Calculates a string between the tag parameter and the following semicolon, non inclusive.
+     * Each tag is assumed to be followed by ": " so it should not be included in the parameter.
+     * @param line The string to be searched
+     * @param tag The keyword being looked for in the String line parameter.
+     * @return String containing all characters between line + ": ".
+     */
+    private String getInfo(String line, String tag) {
 
-        return "";
+        if(!tag.endsWith(": ")) {
+            tag += ": ";
+        }
+
+        int ind = line.indexOf(tag) + tag.length();
+
+        return line.substring(
+                ind,
+                line.indexOf(';', ind) - 1
+        );
+    }
+
+    /**
+     * Calls on getInfo to isolate the substring between the tag parameter and the following ";". Then
+     * iterates through the resulting string to create a list with each item being the substring between each
+     * comma in the main String. Then adds the tail end of the string which should be the last item.
+     * @param line The String to be searched.
+     * @param tag The String keyword to search for within the line parameter.
+     * @return A list with each element being the substrings contained between the commas in the substring between tag and the following semicolon.
+     */
+    private List<String> getInfoList(String line, String tag) {
+
+        List<String> items = new ArrayList<>();
+
+        String data = getInfo(line, tag);
+        while (data.contains(",")) {
+            items.add(data.substring(0, data.indexOf(",") - 1));
+            data = data.substring(data.indexOf(",") + 1);
+        }
+
+        items.add(data);
+
+        return items;
     }
 
     //TODO
-    private List<String> getInfoList(String tag) {
-
+    private List<Role> getRolesList(List<String> strs) {
         return new ArrayList<>();
     }
 
-    //TODO
-    private List<Role> getRolesFromList(List<String> strs) {
-        return new ArrayList<>();
-    }
-
-    //TODO
-    private List<Shift> getShiftsFromList(List<String> strs) {
-        return new ArrayList<>();
+    /**
+     * Creates a List of Shift objects based on a List of Strings.
+     * @param strs The List of Strings representing Shift objects.
+     * @return A List of Shift objects representing the supplied List of Strings.
+     */
+    private List<Shift> getShiftsList(List<String> strs) {
+        List<Shift> tempShifts = new ArrayList<>();
+        Shift shift = new Shift();
+        for(String s : strs) {
+            tempShifts.add(shift.getShiftFromString(s));
+        }
+        return tempShifts;
     }
 
     /**

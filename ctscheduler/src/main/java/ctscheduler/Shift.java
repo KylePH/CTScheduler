@@ -47,6 +47,43 @@ public class Shift {
         }
     }
 
+    public Shift() {};
+
+    public Shift getShiftFromString(String daytime) {
+        String day;
+        String time;
+
+        day = daytime.substring(0, daytime.indexOf(" ") - 1);
+        time = daytime.substring(daytime.indexOf(" ") + 1);
+
+        Day d = null;
+        TimeOfDay t = null;
+
+        if(day.equalsIgnoreCase("monday")) {
+            d = Day.MONDAY;
+        } else if(day.equalsIgnoreCase("tuesday")) {
+            d = Day.TUESDAY;
+        } else if(day.equalsIgnoreCase("wednesday")) {
+            d = Day.WEDNESDAY;
+        } else if(day.equalsIgnoreCase("thursday")) {
+            d = Day.THURSDAY;
+        } else if(day.equalsIgnoreCase("friday")) {
+            d = Day.FRIDAY;
+        } else if(day.equalsIgnoreCase("saturday")) {
+            d = Day.SATURDAY;
+        } else if(day.equalsIgnoreCase("sunday")) {
+            d = Day.SUNDAY;
+        }
+
+        if(time.equalsIgnoreCase("lunch")) {
+            t = TimeOfDay.LUNCH;
+        } else if(time.equalsIgnoreCase("dinner")) {
+            t = TimeOfDay.DINNER;
+        }
+
+        return new Shift(d, t);
+    }
+
     @Override
     public String toString() {
         return name;
