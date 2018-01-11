@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.controllers.addrole.AddRoleController">
    <children>
-      <Accordion layoutX="14.0" layoutY="137.0" AnchorPane.leftAnchor="14.0">
+      <Accordion layoutX="14.0" layoutY="137.0" maxHeight="232.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="228.0" AnchorPane.topAnchor="137.0">
         <panes>
           <TitledPane animated="false" maxHeight="70.0" minHeight="70.0" prefHeight="70.0" text="Monday">
             <content>
@@ -91,7 +91,7 @@
       <TextField fx:id="txtRoleName" layoutX="89.0" layoutY="31.0" prefHeight="27.0" prefWidth="117.0" />
       <Label layoutX="243.0" layoutY="36.0" text="Color:" />
       <ColorPicker fx:id="colorPickerRoleColor" layoutX="287.0" layoutY="31.0" />
-      <Accordion layoutX="228.0" layoutY="137.0" AnchorPane.rightAnchor="14.0">
+      <Accordion layoutX="228.0" layoutY="137.0" maxHeight="232.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="228.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="137.0">
          <panes>
             <TitledPane animated="false" maxHeight="70.0" minHeight="70.0" prefHeight="70.0" text="Monday">
                <content>

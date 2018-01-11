@@ -92,8 +92,8 @@ public class AddEmployeeController {
         Employee employee = new Employee(
                 txtFirstName.getText(),
                 txtLastName.getText(),
-                chkcomboRoles.getCheckModel().getCheckedItems(),
-                availabilityListSelection.getTargetItems(),
+                fileManager.getRolesList(chkcomboRoles.getCheckModel().getCheckedItems()),
+                availabilityListSelection.getTargetItems(), //TODO: need to be List<Shift>
                 (int) comboBoxRating.getValue(),
                 Float.valueOf(textFieldHourlyRate.getText()),
                 Integer.valueOf(textFieldPreferredWeeklyHours.getText()),
@@ -180,7 +180,6 @@ public class AddEmployeeController {
     }
 
     public void setRoles(List<Role> roles) {
-        System.out.println(roles.size());
         this.roles = roles;
         rolesList = FXCollections.observableArrayList();
 
@@ -188,9 +187,5 @@ public class AddEmployeeController {
             rolesList.add(role.getName());
             chkcomboRoles.getItems().add(role.getName());
         }
-        for(String str : rolesList) {
-            System.out.println(str);
-        }
     }
-
 }

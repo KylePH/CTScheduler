@@ -51,7 +51,7 @@ public class Role {
             numShift += shift.toString() + " - " + numPerShift.get(shift) + ", ";
         }
         numShift.trim();
-        numShift = numShift.substring(0, numShift.length() - 1);
+        numShift = numShift.substring(0, numShift.length() - 2);
         s += "numPerShift: " + numShift + "; ";
 
         s += "color: " + toHexCode(color) + ";";

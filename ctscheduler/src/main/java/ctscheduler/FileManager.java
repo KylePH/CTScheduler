@@ -364,6 +364,7 @@ public class FileManager {
         while (data.contains(",")) {
             hashMap.put(Shift.getShiftFromString(data.substring(0, data.indexOf("-") - 1)),
                     Integer.valueOf(data.substring(data.indexOf("-") + 2, data.indexOf(","))));
+            System.out.println(data);
             data = data.substring(data.indexOf(",") + 2);
         }
 
@@ -378,7 +379,7 @@ public class FileManager {
      * @param strs List of Strings representing the names of existing roles.
      * @return List of Role objects corresponding with the names given in the parameter.
      */
-    private List<Role> getRolesList(List<String> strs) {
+    public List<Role> getRolesList(List<String> strs) {
         List<Role> tempRoles = new ArrayList<>();
         for(String str : strs) {
             for(Role role : roles) {
