@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.IndexedCheckModel;
 import org.controlsfx.control.ListSelectionView;
 
 import java.time.format.DateTimeFormatter;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddEmployeeController {
-
-    List<Shift> shifts;
 
     @FXML
     ListSelectionView availabilityListSelection;
@@ -63,7 +62,15 @@ public class AddEmployeeController {
 
     ObservableList<String> daysOffList;
 
+    ObservableList<String> shiftList;
+
+    ObservableList<String> rolesList;
+
     FileManager fileManager;
+
+    List<Shift> shifts;
+
+    List<Role> roles;
 
     /**
      * Retrieves data from all user input controls and sets them to the appropriate fields within the Employee
@@ -74,7 +81,7 @@ public class AddEmployeeController {
 
         if(txtFirstName.getText().equals("")
                 || txtLastName.getText().equals("")
-                || chkcomboRoles.getItems().isEmpty()
+                || chkcomboRoles.getCheckModel().getCheckedItems().isEmpty()
                 || comboBoxRating.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR,
                     "Some required fields are empty.",
@@ -85,7 +92,7 @@ public class AddEmployeeController {
         Employee employee = new Employee(
                 txtFirstName.getText(),
                 txtLastName.getText(),
-                chkcomboRoles.getItems(),
+                chkcomboRoles.getCheckModel().getCheckedItems(),
                 availabilityListSelection.getTargetItems(),
                 (int) comboBoxRating.getValue(),
                 Float.valueOf(textFieldHourlyRate.getText()),
@@ -123,7 +130,7 @@ public class AddEmployeeController {
 
     @FXML
     protected void btnManageRoles() {
-        // TODO: populate chkcomboRoles with roles.
+        // TODO
     }
 
     @FXML
@@ -160,12 +167,11 @@ public class AddEmployeeController {
 
     public void setShifts(List<Shift> shifts) {
         this.shifts = shifts;
-        ObservableList<String> shiftList = FXCollections.observableArrayList();
+        shiftList = FXCollections.observableArrayList();
 
         for(Shift shift : shifts) {
             shiftList.add(shift.toString());
         }
-
         availabilityListSelection.setSourceItems(shiftList);
     }
 
@@ -173,5 +179,18 @@ public class AddEmployeeController {
         this.fileManager = fileManager;
     }
 
+    public void setRoles(List<Role> roles) {
+        System.out.println(roles.size());
+        this.roles = roles;
+        rolesList = FXCollections.observableArrayList();
+
+        for(Role role : roles) {
+            rolesList.add(role.getName());
+            chkcomboRoles.getItems().add(role.getName());
+        }
+        for(String str : rolesList) {
+            System.out.println(str);
+        }
+    }
 
 }

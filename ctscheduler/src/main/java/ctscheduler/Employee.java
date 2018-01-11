@@ -66,10 +66,10 @@ public class Employee {
         // add all roles separated by commas
         String roles = "";
         for(Role roll : role) {
-            roles += roll.toString() + ", ";
+            roles += roll.getName() + ", ";
         }
         roles.trim();
-        roles = roles.substring(0, roles.length() - 2);
+        roles = roles.substring(0, roles.length() - 1);
         s += "roles: " + roles + "; ";
 
         // add all available shifts separated by commas
@@ -78,7 +78,7 @@ public class Employee {
             avail += shift.toString() + ", ";
         }
         avail.trim();
-        avail = avail.substring(0, avail.length() - 2);
+        avail = avail.substring(0, avail.length() - 1);
         s += "availability: " + avail + "; ";
 
         // add performance rating

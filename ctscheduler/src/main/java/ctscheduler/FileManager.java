@@ -36,8 +36,6 @@ public class FileManager {
     public FileManager() {
         isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         parseAppData();
-        employees = new ArrayList<>();
-        roles = new ArrayList<>();
     }
 
     /**
@@ -238,7 +236,7 @@ public class FileManager {
 
             String first            = getInfo(line, "firstName");
             String last             = getInfo(line, "lastName");
-            List<Role> roleLocal    = getRolesList(getInfoList(line, "roles")); //TODO
+            List<Role> roleLocal    = getRolesList(getInfoList(line, "roles"));
             List<Shift> avail       = getShiftsList(getInfoList(line, "availability"));
             int rating              = Integer.valueOf(getInfo(line, "rating"));
             float hourlyRate        = Float.valueOf(getInfo(line, "hourlyRate"));
@@ -301,7 +299,7 @@ public class FileManager {
 
             rolesLocal.add(new Role(name, numPerShift, color));
         }
-        return new ArrayList<>();
+        return rolesLocal;
     }
 
     /**
@@ -375,8 +373,21 @@ public class FileManager {
         return hashMap;
     }
 
+    /**
+     * Creates a list of Roles based on a list of Strings representing the name of the role.
+     * @param strs List of Strings representing the names of existing roles.
+     * @return List of Role objects corresponding with the names given in the parameter.
+     */
     private List<Role> getRolesList(List<String> strs) {
-        return new ArrayList<>();
+        List<Role> tempRoles = new ArrayList<>();
+        for(String str : strs) {
+            for(Role role : roles) {
+                if(role.getName().equals(str)) {
+                    tempRoles.add(role);
+                }
+            }
+        }
+        return tempRoles;
     }
 
 
@@ -398,5 +409,9 @@ public class FileManager {
      */
     public File getExcelFile() {
         return excelFile;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
     }
 }

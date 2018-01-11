@@ -84,6 +84,7 @@ public class Controller {
             AddEmployeeController addEmployeeController = loader.getController();
             addEmployeeController.setShifts(shifts);
             addEmployeeController.setFileManager(fileManager);
+            addEmployeeController.setRoles(fileManager.getRoles());
 
             Stage stage = new Stage();
             Scene scene = new Scene(form);
@@ -275,8 +276,6 @@ public class Controller {
         chkboxEditMode.setDisable(true);
         dpSelectScheduleWeek.setShowWeekNumbers(true);
 
-        fileManager = new FileManager();
-
         // populate shifts
         shifts = new ArrayList<>();
         shifts.add(new Shift(Day.MONDAY, TimeOfDay.LUNCH));
@@ -294,5 +293,9 @@ public class Controller {
         shifts.add(new Shift(Day.SUNDAY, TimeOfDay.LUNCH));
         shifts.add(new Shift(Day.SUNDAY, TimeOfDay.DINNER));
 
+    }
+
+    public Controller() {
+        fileManager = new FileManager();
     }
 }
