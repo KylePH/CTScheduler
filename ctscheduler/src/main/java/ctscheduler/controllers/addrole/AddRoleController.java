@@ -1,7 +1,13 @@
 package ctscheduler.controllers.addrole;
 
+import ctscheduler.*;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+import java.util.HashMap;
 
 
 public class AddRoleController {
@@ -54,9 +60,11 @@ public class AddRoleController {
     @FXML
     ColorPicker colorPickerRoleColor;
 
+    FileManager fileManager;
+
     @FXML
     protected void btnAddRole() {
-        if(     txtMondayLunch.getText().equals("")
+        if( txtMondayLunch.getText().equals("")
                 || txtMondayDinner.getText().equals("")
                 || txtTuesdayLunch.getText().equals("")
                 || txtTuesdayDinner.getText().equals("")
@@ -70,6 +78,7 @@ public class AddRoleController {
                 || txtSaturdayDinner.getText().equals("")
                 || txtSundayLunch.getText().equals("")
                 || txtSundayDinner.getText().equals("")
+                || txtRoleName.getText().equals("")
                 ) {
             Alert alert = new Alert(Alert.AlertType.ERROR,
                     "Not all fields have been filled in. Try again.",
@@ -97,13 +106,39 @@ public class AddRoleController {
             alert.showAndWait();
             return;
         }
-        //TODO
+
+        HashMap<Shift, Integer> numPerShift = new HashMap<>();
+
+        numPerShift.put(new Shift(Day.MONDAY, TimeOfDay.LUNCH), Integer.valueOf(txtMondayLunch.getText()));
+        numPerShift.put(new Shift(Day.MONDAY, TimeOfDay.DINNER), Integer.valueOf(txtMondayDinner.getText()));
+        numPerShift.put(new Shift(Day.TUESDAY, TimeOfDay.LUNCH), Integer.valueOf(txtTuesdayLunch.getText()));
+        numPerShift.put(new Shift(Day.TUESDAY, TimeOfDay.DINNER), Integer.valueOf(txtTuesdayDinner.getText()));
+        numPerShift.put(new Shift(Day.WEDNESDAY, TimeOfDay.LUNCH), Integer.valueOf(txtWednesdayLunch.getText()));
+        numPerShift.put(new Shift(Day.WEDNESDAY, TimeOfDay.DINNER), Integer.valueOf(txtWednesdayDinner.getText()));
+        numPerShift.put(new Shift(Day.THURSDAY, TimeOfDay.LUNCH), Integer.valueOf(txtThursdayLunch.getText()));
+        numPerShift.put(new Shift(Day.THURSDAY, TimeOfDay.DINNER), Integer.valueOf(txtThursdayDinner.getText()));
+        numPerShift.put(new Shift(Day.FRIDAY, TimeOfDay.LUNCH), Integer.valueOf(txtFridayLunch.getText()));
+        numPerShift.put(new Shift(Day.FRIDAY, TimeOfDay.DINNER), Integer.valueOf(txtFridayDinner.getText()));
+        numPerShift.put(new Shift(Day.SATURDAY, TimeOfDay.LUNCH), Integer.valueOf(txtSaturdayLunch.getText()));
+        numPerShift.put(new Shift(Day.SATURDAY, TimeOfDay.DINNER), Integer.valueOf(txtSaturdayDinner.getText()));
+        numPerShift.put(new Shift(Day.SUNDAY, TimeOfDay.LUNCH), Integer.valueOf(txtSundayLunch.getText()));
+        numPerShift.put(new Shift(Day.SUNDAY, TimeOfDay.DINNER), Integer.valueOf(txtSundayDinner.getText()));
+
+        Color roleColor = colorPickerRoleColor.getValue();
+
+        fileManager.saveRole(new Role(txtRoleName.getText(), numPerShift, roleColor));
+
+        Stage stage = (Stage) txtThursdayLunch.getScene().getWindow();
+        stage.close();
     }
 
-    public static boolean isNumeric(String str)
-    {
-        for (char c : str.toCharArray())
-        {
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+
+    private boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) return false;
         }
         return true;

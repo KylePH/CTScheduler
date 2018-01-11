@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.ListSelectionView;
 
@@ -113,6 +114,11 @@ public class AddEmployeeController {
         }
 
         employee.save(fileManager);
+
+        // Then close the add employee window.
+        Stage stage = (Stage) chkboxActive.getScene().getWindow();
+        stage.close();
+
     }
 
     @FXML

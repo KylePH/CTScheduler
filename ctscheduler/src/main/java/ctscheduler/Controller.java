@@ -1,6 +1,7 @@
 package ctscheduler;
 
 import ctscheduler.controllers.addemployee.AddEmployeeController;
+import ctscheduler.controllers.addrole.AddRoleController;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,13 +101,35 @@ public class Controller {
 
     }
 
+
     @FXML
-    protected void mnuOpenEditEmployeeForm() {
+    protected void mnuOpenAddRoleForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addRoleForm.fxml"));
+            Parent form = loader.load();
+
+            AddRoleController addRoleController = loader.getController();
+            addRoleController.setFileManager(fileManager);
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(form);
+            stage.setTitle("Add Position");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void mnuOpenManageRolesForm() {
 
     }
 
     @FXML
-    protected void mnuOpenViewEmployeesForm() {
+    protected void mnuOpenManageEmployeesForm() {
 
     }
 
@@ -115,10 +138,6 @@ public class Controller {
 
     }
 
-    @FXML
-    protected void mnuOpenSchedulePreferencesForm() {
-
-    }
 
     @FXML
     protected void mnuOpenSchedule() {

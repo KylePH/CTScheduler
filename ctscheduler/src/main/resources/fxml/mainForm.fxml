@@ -20,7 +20,7 @@
 
 <?import org.controlsfx.control.spreadsheet.SpreadsheetView?>
 
-<VBox prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.Controller">
+<VBox prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ctscheduler.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -42,16 +42,19 @@
         </Menu>
             <Menu mnemonicParsing="false" text="Employees">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#mnuOpenViewEmployeesForm" text="View Employees..." />
-                  <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#mnuOpenManageEmployeesForm" text="Manage Employees..." />
                   <MenuItem mnemonicParsing="false" onAction="#mnuOpenRequestOffForm" text="Request Off..." />
-                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenEditEmployeeForm" text="Edit Employee..." />
                   <MenuItem mnemonicParsing="false" onAction="#mnuOpenAddEmployeeForm" text="Add Employee..." />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Positions">
+              <items>
+                <MenuItem fx:id="mnuOpenManageRolesForm" mnemonicParsing="false" onAction="#mnuOpenManageRolesForm" text="Manage Positions..." />
+                  <MenuItem fx:id="mnuOpenAddRoleForm" mnemonicParsing="false" onAction = "#mnuOpenAddRoleForm" text="Add Position..." />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Schedule">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#mnuOpenSchedulePreferencesForm" text="Schedule Preferences" />
                   <MenuItem mnemonicParsing="false" onAction="#mnuOpenInExcel" text="Open in Excel" />
               </items>
             </Menu>

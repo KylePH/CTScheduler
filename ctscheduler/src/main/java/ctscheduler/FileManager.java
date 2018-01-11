@@ -26,6 +26,7 @@ public class FileManager {
     private List<File> recentFiles;
     private List<String> settings;
     private List<Employee> employees;
+    private List<Role> roles;
 
     /**
      * This constructor calls the parseAppData() method which brings all saved data into the program during runtime.
@@ -33,6 +34,8 @@ public class FileManager {
     public FileManager() {
         isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
         parseAppData();
+        employees = new ArrayList<>();
+        roles = new ArrayList<>();
     }
 
     /**
@@ -191,6 +194,15 @@ public class FileManager {
      */
     public void saveEmployee(Employee employee) {
         employees.add(employee);
+        saveData();
+    }
+
+    /**
+     * Loads a role into the FileManager and saves all current data to text files in the AppData folder.
+     * @param role Role to be added and saved.
+     */
+    public void saveRole(Role role) {
+        roles.add(role);
         saveData();
     }
 
