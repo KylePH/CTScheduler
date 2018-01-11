@@ -1,5 +1,6 @@
 package ctscheduler;
 
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FileManager {
@@ -85,8 +87,8 @@ public class FileManager {
 
         try {
             settings = Files.readAllLines(settingsTxt);
-            //employees = Files.readAllLines(employeesTxt);
-            //roles = Files.readAllLines(rolesTxt);
+            roles = parseRoleText();
+            employees = parseEmployeeText();
             recentFiles = new ArrayList<>();
             List<String> temp = Files.readAllLines(recentFilesTxt);
             for(int i = 0; i < temp.size(); i++) {
@@ -165,9 +167,16 @@ public class FileManager {
      */
     public void saveData() {
         saveDataHelper(settingsTxt, settings);
-        //saveDataHelper(employeesTxt, employees);
-        //saveDataHelper(rolesTxt, roles);
-        // TODO: These two calls
+        saveDataHelper(employeesTxt, objListToStringList(employees));
+        saveDataHelper(rolesTxt, objListToStringList(roles));
+    }
+
+    private List<String> objListToStringList(List<?> list) {
+        List<String> li = new ArrayList<>();
+        for(Object o : list) {
+            li.add(o.toString());
+        }
+        return li;
     }
 
     /**
@@ -178,7 +187,7 @@ public class FileManager {
     private void saveDataHelper(Path saveFile, List<String> list) {
         Path writtenFile = null;
         try {
-            writtenFile = Files.write(saveFile, list, StandardOpenOption.CREATE_NEW);
+            writtenFile = Files.write(saveFile, list, StandardOpenOption.WRITE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -223,13 +232,13 @@ public class FileManager {
         }
 
         // The order the information is stored is as follows:
-        // first name; last name; role(s); availability (ex: "Friday Lunch"); rating (1 - 10); hourly rate (float);
-        // preferred weekly hours (int); active (boolean); start date (mm.dd.yyyy); end date (mm.dd.yyyy); days off
+        // first name; last name; role(s); availability (ex: "Friday Lunch"); rating (1 - 10); hourlyRate (float);
+        // preferredWeeklyHours (int); active (boolean); startDate (mm.dd.yyyy); endDate (mm.dd.yyyy); daysOff;
         for(String line : lines) {
 
             String first            = getInfo(line, "firstName");
             String last             = getInfo(line, "lastName");
-            List<Role> roleLocal    = getRolesList(getInfoList(line, "roles"));
+            List<Role> roleLocal    = getRolesList(getInfoList(line, "roles")); //TODO
             List<Shift> avail       = getShiftsList(getInfoList(line, "availability"));
             int rating              = Integer.valueOf(getInfo(line, "rating"));
             float hourlyRate        = Float.valueOf(getInfo(line, "hourlyRate"));
@@ -268,9 +277,30 @@ public class FileManager {
         return employeeLocal;
     }
 
-    //TODO
+    /**
+     * Reads through all lines in the roles text file and creates a list containing Role objects associated with
+     * the data provided on each line of the text file.
+     * @return a list of previously saved roles.
+     */
     private List<Role> parseRoleText() {
+        List<String> lines = null;
+        List<Role> rolesLocal = new ArrayList<>();
+        try {
+            lines = Files.readAllLines(rolesTxt);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+        // Information is stored as follows:
+        // name (String); numPerShift (HashMap<Shift, Integer>); String color;
+        for(String line : lines) {
+            String name = getInfo(line, "name");
+            HashMap<Shift, Integer> numPerShift = getInfoHashMap(line, "numPerShift");
+            Color color = Color.web(getInfo(line, "color"));
+
+            rolesLocal.add(new Role(name, numPerShift, color));
+        }
         return new ArrayList<>();
     }
 
@@ -291,7 +321,7 @@ public class FileManager {
 
         return line.substring(
                 ind,
-                line.indexOf(';', ind) - 1
+                line.indexOf(';', ind)
         );
     }
 
@@ -309,8 +339,8 @@ public class FileManager {
 
         String data = getInfo(line, tag);
         while (data.contains(",")) {
-            items.add(data.substring(0, data.indexOf(",") - 1));
-            data = data.substring(data.indexOf(",") + 1);
+            items.add(data.substring(0, data.indexOf(",")));
+            data = data.substring(data.indexOf(",") + 2);
         }
 
         items.add(data);
@@ -318,10 +348,37 @@ public class FileManager {
         return items;
     }
 
-    //TODO
+    /**
+     * Calls on getInfo to isolate the substring between the tag parameter and the following ";". Then
+     * iteates through the resulting string to create a list with each item being the substring between each
+     * comma in the main String. The substring has two items in it separated by " - ". The first item represents
+     * a Shift object, and the second represents an integer. These values are loaded into a HashMap with the key
+     * a value respectively.
+     * @param line
+     * @param tag
+     * @return
+     */
+    private HashMap<Shift, Integer> getInfoHashMap(String line, String tag) {
+        HashMap<Shift, Integer> hashMap = new HashMap<>();
+
+
+        String data = getInfo(line, tag);
+        while (data.contains(",")) {
+            hashMap.put(Shift.getShiftFromString(data.substring(0, data.indexOf("-") - 1)),
+                    Integer.valueOf(data.substring(data.indexOf("-") + 2, data.indexOf(","))));
+            data = data.substring(data.indexOf(",") + 2);
+        }
+
+        hashMap.put(Shift.getShiftFromString(data.substring(0, data.indexOf("-") - 1)),
+                Integer.valueOf(data.substring(data.indexOf("-") + 2)));
+
+        return hashMap;
+    }
+
     private List<Role> getRolesList(List<String> strs) {
         return new ArrayList<>();
     }
+
 
     /**
      * Creates a List of Shift objects based on a List of Strings.
@@ -330,9 +387,8 @@ public class FileManager {
      */
     private List<Shift> getShiftsList(List<String> strs) {
         List<Shift> tempShifts = new ArrayList<>();
-        Shift shift = new Shift();
         for(String s : strs) {
-            tempShifts.add(shift.getShiftFromString(s));
+            tempShifts.add(Shift.getShiftFromString(s));
         }
         return tempShifts;
     }

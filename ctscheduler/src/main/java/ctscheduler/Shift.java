@@ -47,14 +47,18 @@ public class Shift {
         }
     }
 
-    public Shift() {};
+    public Shift() {}
 
-    public Shift getShiftFromString(String daytime) {
+    public static Shift getShiftFromString(String daytime) {
+        daytime.trim();
+
         String day;
         String time;
 
-        day = daytime.substring(0, daytime.indexOf(" ") - 1);
+        day = daytime.substring(0, daytime.indexOf(" "));
         time = daytime.substring(daytime.indexOf(" ") + 1);
+        System.out.println(day);
+        System.out.println(time + "\n");
 
         Day d = null;
         TimeOfDay t = null;
