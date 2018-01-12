@@ -80,9 +80,6 @@ public class FileManager {
             return;
         }
 
-
-
-
         try {
             settings = Files.readAllLines(settingsTxt);
             roles = parseRoleText();
@@ -257,11 +254,11 @@ public class FileManager {
                     active
             );
 
-            if(startDate != null) {
+            if(!startDate.equals("")) {
                 emp.setStartDate(startDate);
             }
 
-            if(endDate != null) {
+            if(!endDate.equals("")) {
                 emp.setEndDate(endDate);
             }
 
@@ -364,7 +361,6 @@ public class FileManager {
         while (data.contains(",")) {
             hashMap.put(Shift.getShiftFromString(data.substring(0, data.indexOf("-") - 1)),
                     Integer.valueOf(data.substring(data.indexOf("-") + 2, data.indexOf(","))));
-            System.out.println(data);
             data = data.substring(data.indexOf(",") + 2);
         }
 
@@ -397,7 +393,7 @@ public class FileManager {
      * @param strs The List of Strings representing Shift objects.
      * @return A List of Shift objects representing the supplied List of Strings.
      */
-    private List<Shift> getShiftsList(List<String> strs) {
+    public List<Shift> getShiftsList(List<String> strs) {
         List<Shift> tempShifts = new ArrayList<>();
         for(String s : strs) {
             tempShifts.add(Shift.getShiftFromString(s));

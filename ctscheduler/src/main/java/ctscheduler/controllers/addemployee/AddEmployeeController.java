@@ -93,7 +93,7 @@ public class AddEmployeeController {
                 txtFirstName.getText(),
                 txtLastName.getText(),
                 fileManager.getRolesList(chkcomboRoles.getCheckModel().getCheckedItems()),
-                availabilityListSelection.getTargetItems(), //TODO: need to be List<Shift>
+                fileManager.getShiftsList(availabilityListSelection.getTargetItems()), //TODO: need to be List<Shift>
                 (int) comboBoxRating.getValue(),
                 Float.valueOf(textFieldHourlyRate.getText()),
                 Integer.valueOf(textFieldPreferredWeeklyHours.getText()),
