@@ -2,7 +2,6 @@ package ctscheduler.controllers.addrole;
 
 import ctscheduler.*;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;

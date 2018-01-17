@@ -63,7 +63,6 @@ public class Employee {
         // add last name
         s += "lastName: " + lastName + "; ";
 
-        System.out.println("approaching role adding to string");
 
         // add all roles separated by commas
         String roles = "";
@@ -73,6 +72,7 @@ public class Employee {
         roles.trim();
         roles = roles.substring(0, roles.length() - 2);
         s += "roles: " + roles + "; ";
+        System.out.println(roles);
 
         // add all available shifts separated by commas
         String avail = "";
@@ -107,7 +107,7 @@ public class Employee {
             days += str + ", ";
         }
         days.trim();
-        days = days.substring(0, days.length() - 1);
+        days = days.substring(0, days.length() - 2);
         s += "daysOff: " + days + ";";
 
         return s;

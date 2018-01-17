@@ -3,12 +3,17 @@ package ctscheduler;
 import ctscheduler.controllers.addemployee.AddEmployeeController;
 import ctscheduler.controllers.addrole.AddRoleController;
 import javafx.application.HostServices;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
 
 import java.io.File;
@@ -129,8 +134,66 @@ public class Controller {
 
     }
 
+    // I just make the whole thing manually here without loading up a scene from an FXML document.
     @FXML
     protected void mnuOpenManageEmployeesForm() {
+
+        int height = 450;
+        int width = 600;
+
+        MasterDetailPane masterDetailPane = new MasterDetailPane();
+        TableView employeeTableView = new TableView();
+        Label detailLabel = new Label();
+        masterDetailPane.setMasterNode(employeeTableView);
+        masterDetailPane.setDividerPosition(0.7D);
+        masterDetailPane.setDetailNode(detailLabel);
+        masterDetailPane.setDetailSide(Side.BOTTOM);
+        masterDetailPane.setShowDetailNode(true);
+        masterDetailPane.setPrefSize(width, height - 50);
+
+        // TODO: populate masterDetailPane with currently loaded Employee objects.
+        // TODO: create columns for necessary information and put the rest in the detail pane.
+
+        Button btnCancel = new Button();
+        btnCancel.setText("Cancel");
+        btnCancel.setLayoutX(8d);
+        btnCancel.setLayoutY(height - 35d);
+
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = (Stage) btnCancel.getScene().getWindow();
+                stage.close();
+            }
+        });
+
+        Button btnEdit = new Button();
+        btnEdit.setText("Edit");
+        btnEdit.setLayoutX(width - 50);
+        btnEdit.setLayoutY(height - 35);
+
+        btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO add a way to open the addEmployeeForm with parameters to fill fields
+            }
+        });
+
+
+        AnchorPane root = new AnchorPane();
+
+        root.getChildren().add(masterDetailPane);
+        root.getChildren().add(btnCancel);
+        root.getChildren().add(btnEdit);
+
+        Scene scene = new Scene(root, width, height);
+
+        Stage stage = new Stage();
+
+        stage.setTitle("Manage Employees");
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
 
     }
 
@@ -267,8 +330,8 @@ public class Controller {
      */
     @FXML
     public void initialize() {
-        noScheduleOpenLabel.setVisible(true);
-        spreadsheetView.setVisible(false);
+        noScheduleOpenLabel.setVisible(false);
+        spreadsheetView.setVisible(true);
         spreadsheetView.setEditable(false);
         dpSelectScheduleWeek.setDisable(true);
         btnCreateSchedule.setDisable(true);
