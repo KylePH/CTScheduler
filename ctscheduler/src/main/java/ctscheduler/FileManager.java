@@ -197,6 +197,7 @@ public class FileManager {
      * @param employee Employee to be added and saved.
      */
     public void saveEmployee(Employee employee) {
+        removeDuplicateEmployee(employee);
         employees.add(employee);
         saveData();
     }
@@ -408,7 +409,28 @@ public class FileManager {
         return excelFile;
     }
 
+    /**
+     * @return The currently loaded Roles
+     */
     public List<Role> getRoles() {
         return roles;
+    }
+
+    /**
+     * @return The currently loaded Employees
+     */
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void removeDuplicateEmployee(Employee employee) {
+        String first = employee.getFirstName();
+        String last = employee.getLastName();
+        for(int x = 0; x < employees.size(); x++) {
+            Employee emp = employees.get(x);
+            if(emp.getFirstName().equals(first) && emp.getLastName().equals(last)) {
+                employees.remove(x);
+            }
+        }
     }
 }

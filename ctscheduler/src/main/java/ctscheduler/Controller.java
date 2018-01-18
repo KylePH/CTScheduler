@@ -3,6 +3,12 @@ package ctscheduler;
 import ctscheduler.controllers.addemployee.AddEmployeeController;
 import ctscheduler.controllers.addrole.AddRoleController;
 import javafx.application.HostServices;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,8 +17,12 @@ import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
 
@@ -141,23 +151,41 @@ public class Controller {
         int height = 450;
         int width = 600;
 
-        MasterDetailPane masterDetailPane = new MasterDetailPane();
-        TableView employeeTableView = new TableView();
-        Label detailLabel = new Label();
-        masterDetailPane.setMasterNode(employeeTableView);
-        masterDetailPane.setDividerPosition(0.7D);
-        masterDetailPane.setDetailNode(detailLabel);
-        masterDetailPane.setDetailSide(Side.BOTTOM);
-        masterDetailPane.setShowDetailNode(true);
-        masterDetailPane.setPrefSize(width, height - 50);
+        List<Employee> empListLocal = fileManager.getEmployees();
+        final Employee[] selectedEmployee = new Employee[1]; // So I can set this from a child class
 
-        // TODO: populate masterDetailPane with currently loaded Employee objects.
-        // TODO: create columns for necessary information and put the rest in the detail pane.
+        MasterDetailPane masterDetailPane = new MasterDetailPane();
+        TableView employeeTable = new TableView();
+        Label detailLabel = new Label();
+        detailLabel.setWrapText(true);
+        detailLabel.setTextAlignment(TextAlignment.LEFT);
+        ScrollPane labelPane = new ScrollPane(detailLabel);
+
+
+        employeeTable.setItems(FXCollections.observableList(empListLocal));
+
+        TableColumn employeeNameCol  = new TableColumn("Name");
+        employeeNameCol.setCellValueFactory(new PropertyValueFactory("name"));
+
+        TableColumn employeeRoleCol  = new TableColumn("Position");
+        employeeRoleCol.setCellValueFactory(new PropertyValueFactory("position"));
+
+        employeeTable.getColumns().setAll(employeeNameCol, employeeRoleCol);
+        employeeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        masterDetailPane.setMasterNode(employeeTable);
+        masterDetailPane.setDividerPosition(0.5D);
+        masterDetailPane.setDetailNode(labelPane);
+        masterDetailPane.setDetailSide(Side.RIGHT);
+        masterDetailPane.setShowDetailNode(true);
+        masterDetailPane.setPrefSize(width - 20, height - 60);
+        masterDetailPane.setLayoutX(10d);
+        masterDetailPane.setLayoutY(10d);
 
         Button btnCancel = new Button();
         btnCancel.setText("Cancel");
-        btnCancel.setLayoutX(8d);
-        btnCancel.setLayoutY(height - 35d);
+        btnCancel.setLayoutX(10d);
+        btnCancel.setLayoutY(height - 37d); // height is 27 then subtract 10 for padding.
 
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -167,18 +195,67 @@ public class Controller {
             }
         });
 
-        Button btnEdit = new Button();
+        Button btnEdit = new Button(); // Width is 42, height is 27
         btnEdit.setText("Edit");
-        btnEdit.setLayoutX(width - 50);
-        btnEdit.setLayoutY(height - 35);
+        btnEdit.setLayoutX(width - 52d); // width is 42 after added to the container. Then subtract 10 for padding.
+        btnEdit.setLayoutY(height - 37d); // height is 27 then subtract 10 for padding.
+        btnEdit.setDisable(true);
 
         btnEdit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // TODO add a way to open the addEmployeeForm with parameters to fill fields
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmployeeForm.fxml"));
+                    Parent form = loader.load();
+
+                    AddEmployeeController addEmployeeController = loader.getController();
+                    addEmployeeController.setShifts(shifts);
+                    addEmployeeController.setFileManager(fileManager);
+                    addEmployeeController.setRoles(fileManager.getRoles());
+                    addEmployeeController.setEmployee(selectedEmployee[0]);
+
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(form);
+                    stage.setTitle("Edit Employee");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                    stage.setOnHiding(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent event) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // They clicked the add employee button and the dialog closed.
+                                    // Now reopen the manage employees dialog to have updated data
+                                    Stage stage = (Stage) btnCancel.getScene().getWindow();
+                                    stage.close();
+                                    mnuOpenManageEmployeesForm();
+                                }
+                            });
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
+        employeeTable.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int ix = newValue.intValue();
+                if(ix == empListLocal.size()) {
+                    btnEdit.setDisable(true);
+                    return; // invalid data
+                }
+
+                selectedEmployee[0] = empListLocal.get(ix);
+                detailLabel.setText(selectedEmployee[0].getInfo());
+                btnEdit.setDisable(false);
+
+            }
+        });
 
         AnchorPane root = new AnchorPane();
 
