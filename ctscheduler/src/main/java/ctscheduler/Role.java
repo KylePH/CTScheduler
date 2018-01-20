@@ -1,31 +1,47 @@
 package ctscheduler;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 
 public class Role {
 
-    String name;
-    HashMap<Shift, Integer> numPerShift;
-    Color color;
+    private final String name;
+    private final HashMap<Shift, Integer> numPerShift;
+    private final Color color;
+    private final SimpleStringProperty position;
+    private SimpleStringProperty employees;
 
     public Role(String name, HashMap<Shift, Integer> numPerShift, Color color) {
         this.name = name;
         this.numPerShift = numPerShift;
         this.color = color;
+        this.position = new SimpleStringProperty(name);
     }
 
-    public void getNumberPerShift(Shift shift) {
-        numPerShift.get(shift);
+    public int getNumberPerShift(Shift s) {
+        return numPerShift.get(s);
     }
 
     public Color getColor() {
         return color;
     }
+    
+    public String getColorHex() {
+        String hex = null;
+        if(color != null) {
+            hex = toHexCode(this.color);
+        }
+        return hex;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void setEmployees(String s) {
+        this.employees = new SimpleStringProperty(s);
     }
 
     private String toHexCode( Color color )
@@ -46,17 +62,45 @@ public class Role {
         String s = "";
         s += "name: " + name + "; ";
 
-        String numShift = "";
+        StringBuilder numShift = new StringBuilder();
         for(Shift shift : numPerShift.keySet()) {
-            numShift += shift.toString() + " - " + numPerShift.get(shift) + ", ";
+            numShift.append(shift.toString()).append(" - ").append(numPerShift.get(shift)).append(", ");
         }
-        numShift.trim();
-        numShift = numShift.substring(0, numShift.length() - 2);
+        numShift.toString().trim();
+        numShift = new StringBuilder(numShift.substring(0, numShift.length() - 2));
         s += "numPerShift: " + numShift + "; ";
 
         s += "color: " + toHexCode(color) + ";";
 
         return s;
+    }
+
+    /**
+     * Presents the data associated with this object in a readable format
+     * @return Formatted string containnig all data associated with this object.
+     */
+    public String getInfo() {
+        String s = "";
+        s += "Name: " + name + "\n";
+
+        s += "Color: " + toHexCode(color) + "\n";
+
+        StringBuilder numShift = new StringBuilder();
+        for(Shift shift : numPerShift.keySet()) {
+            numShift.append(shift.toString()).append(" - ").append(numPerShift.get(shift)).append("\n");
+        }
+
+        s += "\nNumbers per each shift:\n" + numShift;
+
+        return s;
+    }
+
+    public String getPosition() {
+        return position.get();
+    }
+
+    public String getEmployees() {
+        return employees.get();
     }
 
 }

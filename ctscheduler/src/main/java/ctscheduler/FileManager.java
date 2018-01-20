@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FileManager {
 
-    private boolean isWindows;
+    private final boolean isWindows;
     private File appDataFolder;
     private File excelFile;
     private File scheduleDirectory;
@@ -86,8 +86,8 @@ public class FileManager {
             employees = parseEmployeeText();
             recentFiles = new ArrayList<>();
             List<String> temp = Files.readAllLines(recentFilesTxt);
-            for(int i = 0; i < temp.size(); i++) {
-                recentFiles.add(new File(temp.get(i)));
+            for (String aTemp : temp) {
+                recentFiles.add(new File(aTemp));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,8 +136,8 @@ public class FileManager {
         recentFiles.add(file);
         List<String> temp = new ArrayList<>();
         if(!recentFiles.isEmpty()) {
-            for (int i = 0; i < recentFiles.size(); i++) {
-                temp.add(recentFiles.get(i).getAbsolutePath());
+            for (File recentFile : recentFiles) {
+                temp.add(recentFile.getAbsolutePath());
             }
         }
         saveDataHelper(recentFilesTxt, temp);
@@ -160,7 +160,7 @@ public class FileManager {
      * Writes all data from the settings, employees, and roles lists to their respective
      * text files within the AppData folder.
      */
-    public void saveData() {
+    private void saveData() {
         saveDataHelper(settingsTxt, settings);
         saveDataHelper(employeesTxt, objListToStringList(employees));
         saveDataHelper(rolesTxt, objListToStringList(roles));
@@ -197,8 +197,13 @@ public class FileManager {
      * @param employee Employee to be added and saved.
      */
     public void saveEmployee(Employee employee) {
-        removeDuplicateEmployee(employee);
         employees.add(employee);
+        saveData();
+    }
+
+    public void updateEmployee(Employee emp, Employee oldEmp) {
+        removeEmployeeIfExists(oldEmp);
+        employees.add(emp);
         saveData();
     }
 
@@ -211,6 +216,11 @@ public class FileManager {
         saveData();
     }
 
+    public void updateRole(Role role, Role oldRole) {
+        removeRoleIfExists(oldRole);
+        roles.add(role);
+        saveData();
+    }
 
     /**
      * Reads each line from the employeesTxt file, and with each line the method then creates one employee object with
@@ -218,7 +228,7 @@ public class FileManager {
      * @return An ArrayList filled with each Employee object contained within the employees text file.
      */
     private List<Employee> parseEmployeeText() {
-        List<String> lines = null;
+        List<String> lines;
         List<Employee> employeeLocal = new ArrayList<>();
         try {
             lines = Files.readAllLines(employeesTxt);
@@ -279,7 +289,7 @@ public class FileManager {
      * @return a list of previously saved roles.
      */
     private List<Role> parseRoleText() {
-        List<String> lines = null;
+        List<String> lines;
         List<Role> rolesLocal = new ArrayList<>();
         try {
             lines = Files.readAllLines(rolesTxt);
@@ -423,13 +433,33 @@ public class FileManager {
         return employees;
     }
 
-    public void removeDuplicateEmployee(Employee employee) {
+    /**
+     * Removes Employee object from the employees List<Employee> if the firstName and lastName fields match.
+     * Does nothing if the Employee is not found.
+     * @param employee Employee to be checked
+     */
+    private void removeEmployeeIfExists(Employee employee) { // TODO: create and use employee.compare(employee2)
         String first = employee.getFirstName();
         String last = employee.getLastName();
         for(int x = 0; x < employees.size(); x++) {
             Employee emp = employees.get(x);
             if(emp.getFirstName().equals(first) && emp.getLastName().equals(last)) {
                 employees.remove(x);
+            }
+        }
+    }
+
+    /**
+     * Removes Role object from the roles List<Role> if the name field matches.
+     * Does nothing if the Role is not found.
+     * @param role Role to be checked.
+     */
+    private void removeRoleIfExists(Role role) {
+        String name = role.getName();
+        for(int x = 0; x < roles.size(); x++) {
+            Role r = roles.get(x);
+            if(r.getName().equals(name)) {
+                roles.remove(x);
             }
         }
     }

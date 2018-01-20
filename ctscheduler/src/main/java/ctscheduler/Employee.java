@@ -7,21 +7,21 @@ import java.util.List;
 
 public class Employee {
 
-    String firstName;
-    String lastName;
-    List<Role> role;
-    List<Shift> availability;
-    List<String> daysOff;
+    private final String firstName;
+    private final String lastName;
+    private final List<Role> role;
+    private final List<Shift> availability;
+    private List<String> daysOff;
 
-    boolean active;
-    String startDate;
-    String endDate;
-    int rating;
-    int preferredWeeklyHours;
-    float hourlyRate;
+    private final boolean active;
+    private String startDate;
+    private String endDate;
+    private final int rating;
+    private final int preferredWeeklyHours;
+    private final float hourlyRate;
 
-    SimpleStringProperty name;
-    SimpleStringProperty position;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty position;
 
     public Employee(String firstName, String lastName, List<Role> role, List<Shift> availability, int rating, float hourlyRate, int preferredWeeklyHours, boolean active) {
         this.firstName = firstName;
@@ -73,21 +73,21 @@ public class Employee {
 
 
         // add all roles separated by commas
-        String roles = "";
+        StringBuilder roles = new StringBuilder();
         for(Role roll : role) {
-            roles += roll.getName() + ", ";
+            roles.append(roll.getName()).append(", ");
         }
-        roles.trim();
-        roles = roles.substring(0, roles.length() - 2);
+        roles.toString().trim();
+        roles = new StringBuilder(roles.substring(0, roles.length() - 2));
         s += "roles: " + roles + "; ";
 
         // add all available shifts separated by commas
-        String avail = "";
+        StringBuilder avail = new StringBuilder();
         for(Shift shift : availability) {
-            avail += shift.toString() + ", ";
+            avail.append(shift.toString()).append(", ");
         }
-        avail.trim();
-        avail = avail.substring(0, avail.length() - 2);
+        avail.toString().trim();
+        avail = new StringBuilder(avail.substring(0, avail.length() - 2));
         s += "availability: " + avail + "; ";
 
         // add performance rating
@@ -109,12 +109,12 @@ public class Employee {
         s += "endDate: " + endDate + "; ";
 
         // add days off
-        String days = "";
+        StringBuilder days = new StringBuilder();
         for(String str : daysOff) {
-            days += str + ", ";
+            days.append(str).append(", ");
         }
-        days.trim();
-        days = days.substring(0, days.length() - 2);
+        days.toString().trim();
+        days = new StringBuilder(days.substring(0, days.length() - 2));
         s += "daysOff: " + days + ";";
 
         return s;
@@ -126,13 +126,13 @@ public class Employee {
      * @return List of Roles associated with the Employee.
      */
     public String getRole() {
-        String roles = "";
+        StringBuilder roles = new StringBuilder();
         for(Role roll : role) {
-            roles += roll.getName() + ", ";
+            roles.append(roll.getName()).append(", ");
         }
-        roles.trim();
-        roles = roles.substring(0, roles.length() - 2);
-        return roles;
+        roles.toString().trim();
+        roles = new StringBuilder(roles.substring(0, roles.length() - 2));
+        return roles.toString();
     }
 
     /**
@@ -153,21 +153,21 @@ public class Employee {
 
 
         // add all roles separated by commas
-        String roles = "";
+        StringBuilder roles = new StringBuilder();
         for(Role roll : role) {
-            roles += roll.getName() + ", ";
+            roles.append(roll.getName()).append(", ");
         }
-        roles.trim();
-        roles = roles.substring(0, roles.length() - 2);
+        roles.toString().trim();
+        roles = new StringBuilder(roles.substring(0, roles.length() - 2));
         s += "Position: " + roles + "\n";
 
         // add all available shifts separated by commas
-        String avail = "";
+        StringBuilder avail = new StringBuilder();
         for(Shift shift : availability) {
-            avail += shift.toString() + ", ";
+            avail.append(shift.toString()).append(", ");
         }
-        avail.trim();
-        avail = avail.substring(0, avail.length() - 2);
+        avail.toString().trim();
+        avail = new StringBuilder(avail.substring(0, avail.length() - 2));
         s += "Availability: " + avail + "\n";
 
         // add performance rating
@@ -189,12 +189,12 @@ public class Employee {
         s += "End date: " + endDate + "\n";
 
         // add days off
-        String days = "";
+        StringBuilder days = new StringBuilder();
         for(String str : daysOff) {
-            days += str + ", ";
+            days.append(str).append(", ");
         }
-        days.trim();
-        days = days.substring(0, days.length() - 2);
+        days.toString().trim();
+        days = new StringBuilder(days.substring(0, days.length() - 2));
         s += "Days off: " + days;
 
         s = s.replace("true", "yes");
@@ -211,6 +211,10 @@ public class Employee {
      */
     public String getName() {
         return name.get();
+    }
+
+    public String getNameSimple() {
+        return firstName + " " + lastName.substring(0, 1) + ".";
     }
 
     /**

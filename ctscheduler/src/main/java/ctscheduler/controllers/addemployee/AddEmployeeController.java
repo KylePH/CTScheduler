@@ -10,17 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.control.IndexedCheckModel;
 import org.controlsfx.control.ListSelectionView;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.ChronoPeriod;
-import java.time.chrono.Chronology;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalField;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,17 +60,19 @@ public class AddEmployeeController {
 
     private DateTimeFormatter dateFormat;
 
-    ObservableList<String> daysOffList;
+    private ObservableList<String> daysOffList;
 
-    ObservableList<String> shiftList;
+    private ObservableList<String> shiftList;
 
-    ObservableList<String> rolesList;
+    private ObservableList<String> rolesList;
 
-    FileManager fileManager;
+    private FileManager fileManager;
 
-    List<Shift> shifts;
+    private List<Shift> shifts;
 
-    List<Role> roles;
+    private List<Role> roles;
+
+    private Employee oldEmployee;
 
     // TODO: Make a way to specify hourly rate for each role selected.
     // TODO: Make a way to remove dates from listViewDaysOff
@@ -137,7 +132,11 @@ public class AddEmployeeController {
             employee.setEndDate(tempDateFormat.format(datePickerEndDate.getValue()));
         }
 
-        fileManager.saveEmployee(employee);
+        if(oldEmployee != null) {
+            fileManager.updateEmployee(employee, oldEmployee);
+        } else {
+            fileManager.saveEmployee(employee);
+        }
 
         // Then close the add employee window.
         Stage stage = (Stage) chkboxActive.getScene().getWindow();
@@ -211,6 +210,7 @@ public class AddEmployeeController {
      * @param emp employee whose fields will be used.
      */
     public void setEmployee(Employee emp) {
+        oldEmployee = emp;
         txtFirstName.setText(emp.getFirstName());
         txtLastName.setText(emp.getLastName());
         textFieldHourlyRate.setText(emp.getHourlyRate() + "");

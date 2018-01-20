@@ -2,9 +2,9 @@ package ctscheduler;
 
 public class Shift {
 
-    Day day;
-    TimeOfDay timeOfDay;
-    String name;
+    private final Day day;
+    private final TimeOfDay timeOfDay;
+    private String name;
 
     public Shift(Day day, TimeOfDay timeOfDay) {
         this.day = day;
@@ -82,6 +82,33 @@ public class Shift {
         }
 
         return new Shift(d, t);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (name!=null ? name.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
+
+        if(obj == null) {
+            return false;
+        }
+
+        if(!(obj instanceof Shift)) {
+            return false;
+        }
+
+        Shift shift = (Shift) obj;
+
+        return shift.toString().equals(this.toString());
+
     }
 
     @Override

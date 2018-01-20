@@ -34,7 +34,7 @@ public class Main extends Application {
         controller.setHostServices(getHostServices());
 
         Scene scene = new Scene(form);
-        primaryStage.setTitle("ConTav Schedule Builder");
+        primaryStage.setTitle("CT Schedule Builder");
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.setMinWidth(600);

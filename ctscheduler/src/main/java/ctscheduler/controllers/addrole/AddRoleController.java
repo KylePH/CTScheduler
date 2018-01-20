@@ -59,7 +59,24 @@ public class AddRoleController {
     @FXML
     ColorPicker colorPickerRoleColor;
 
-    FileManager fileManager;
+    private FileManager fileManager;
+
+    private Shift mondayLunch;
+    private Shift mondayDinner;
+    private Shift tuesdayLunch;
+    private Shift tuesdayDinner;
+    private Shift wednesdayLunch;
+    private Shift wednesdayDinner;
+    private Shift thursdayLunch;
+    private Shift thursdayDinner;
+    private Shift fridayLunch;
+    private Shift fridayDinner;
+    private Shift saturdayLunch;
+    private Shift saturdayDinner;
+    private Shift sundayLunch;
+    private Shift sundayDinner;
+
+    private Role oldRole;
 
     @FXML
     protected void btnAddRole() {
@@ -108,38 +125,81 @@ public class AddRoleController {
 
         HashMap<Shift, Integer> numPerShift = new HashMap<>();
 
-        numPerShift.put(new Shift(Day.MONDAY, TimeOfDay.LUNCH), Integer.valueOf(txtMondayLunch.getText()));
-        numPerShift.put(new Shift(Day.MONDAY, TimeOfDay.DINNER), Integer.valueOf(txtMondayDinner.getText()));
-        numPerShift.put(new Shift(Day.TUESDAY, TimeOfDay.LUNCH), Integer.valueOf(txtTuesdayLunch.getText()));
-        numPerShift.put(new Shift(Day.TUESDAY, TimeOfDay.DINNER), Integer.valueOf(txtTuesdayDinner.getText()));
-        numPerShift.put(new Shift(Day.WEDNESDAY, TimeOfDay.LUNCH), Integer.valueOf(txtWednesdayLunch.getText()));
-        numPerShift.put(new Shift(Day.WEDNESDAY, TimeOfDay.DINNER), Integer.valueOf(txtWednesdayDinner.getText()));
-        numPerShift.put(new Shift(Day.THURSDAY, TimeOfDay.LUNCH), Integer.valueOf(txtThursdayLunch.getText()));
-        numPerShift.put(new Shift(Day.THURSDAY, TimeOfDay.DINNER), Integer.valueOf(txtThursdayDinner.getText()));
-        numPerShift.put(new Shift(Day.FRIDAY, TimeOfDay.LUNCH), Integer.valueOf(txtFridayLunch.getText()));
-        numPerShift.put(new Shift(Day.FRIDAY, TimeOfDay.DINNER), Integer.valueOf(txtFridayDinner.getText()));
-        numPerShift.put(new Shift(Day.SATURDAY, TimeOfDay.LUNCH), Integer.valueOf(txtSaturdayLunch.getText()));
-        numPerShift.put(new Shift(Day.SATURDAY, TimeOfDay.DINNER), Integer.valueOf(txtSaturdayDinner.getText()));
-        numPerShift.put(new Shift(Day.SUNDAY, TimeOfDay.LUNCH), Integer.valueOf(txtSundayLunch.getText()));
-        numPerShift.put(new Shift(Day.SUNDAY, TimeOfDay.DINNER), Integer.valueOf(txtSundayDinner.getText()));
+        numPerShift.put(mondayLunch, Integer.valueOf(txtMondayLunch.getText()));
+        numPerShift.put(mondayDinner, Integer.valueOf(txtMondayDinner.getText()));
+        numPerShift.put(tuesdayLunch, Integer.valueOf(txtTuesdayLunch.getText()));
+        numPerShift.put(tuesdayDinner, Integer.valueOf(txtTuesdayDinner.getText()));
+        numPerShift.put(wednesdayLunch, Integer.valueOf(txtWednesdayLunch.getText()));
+        numPerShift.put(wednesdayDinner, Integer.valueOf(txtWednesdayDinner.getText()));
+        numPerShift.put(thursdayLunch, Integer.valueOf(txtThursdayLunch.getText()));
+        numPerShift.put(thursdayDinner, Integer.valueOf(txtThursdayDinner.getText()));
+        numPerShift.put(fridayLunch, Integer.valueOf(txtFridayLunch.getText()));
+        numPerShift.put(fridayDinner, Integer.valueOf(txtFridayDinner.getText()));
+        numPerShift.put(saturdayLunch, Integer.valueOf(txtSaturdayLunch.getText()));
+        numPerShift.put(saturdayDinner, Integer.valueOf(txtSaturdayDinner.getText()));
+        numPerShift.put(sundayLunch, Integer.valueOf(txtSundayLunch.getText()));
+        numPerShift.put(sundayDinner, Integer.valueOf(txtSundayDinner.getText()));
 
         Color roleColor = colorPickerRoleColor.getValue();
 
-        fileManager.saveRole(new Role(txtRoleName.getText(), numPerShift, roleColor));
+        Role newRole = new Role(txtRoleName.getText(), numPerShift, roleColor);
 
+        if(oldRole == null) {
+            fileManager.saveRole(newRole);
+        } else {
+            fileManager.updateRole(newRole, oldRole);
+        }
         Stage stage = (Stage) txtThursdayLunch.getScene().getWindow();
         stage.close();
+    }
+
+    public void initialize() {
+
+        mondayLunch = new Shift(Day.MONDAY, TimeOfDay.LUNCH);
+        mondayDinner = new Shift(Day.MONDAY, TimeOfDay.DINNER);
+        tuesdayLunch = new Shift(Day.TUESDAY, TimeOfDay.LUNCH);
+        tuesdayDinner = new Shift(Day.TUESDAY, TimeOfDay.DINNER);
+        wednesdayLunch = new Shift(Day.WEDNESDAY, TimeOfDay.LUNCH);
+        wednesdayDinner = new Shift(Day.WEDNESDAY, TimeOfDay.DINNER);
+        thursdayLunch = new Shift(Day.THURSDAY, TimeOfDay.LUNCH);
+        thursdayDinner = new Shift(Day.THURSDAY, TimeOfDay.DINNER);
+        fridayLunch = new Shift(Day.FRIDAY, TimeOfDay.LUNCH);
+        fridayDinner = new Shift(Day.FRIDAY, TimeOfDay.DINNER);
+        saturdayLunch = new Shift(Day.SATURDAY, TimeOfDay.LUNCH);
+        saturdayDinner = new Shift(Day.SATURDAY, TimeOfDay.DINNER);
+        sundayLunch = new Shift(Day.SUNDAY, TimeOfDay.LUNCH);
+        sundayDinner = new Shift(Day.SUNDAY, TimeOfDay.DINNER);
+
     }
 
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
-
     private boolean isNumeric(String str) {
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) return false;
         }
         return true;
+    }
+
+    public void setRole(Role role) {
+        this.oldRole = role;
+        txtRoleName.setText(role.getName());
+        colorPickerRoleColor.setValue(role.getColor());
+        txtMondayLunch.setText("" + role.getNumberPerShift(mondayLunch));
+        txtMondayDinner.setText("" + role.getNumberPerShift(mondayDinner));
+        txtTuesdayLunch.setText("" + role.getNumberPerShift(tuesdayLunch));
+        txtTuesdayDinner.setText("" + role.getNumberPerShift(tuesdayDinner));
+        txtWednesdayLunch.setText("" + role.getNumberPerShift(wednesdayLunch));
+        txtWednesdayDinner.setText("" + role.getNumberPerShift(wednesdayDinner));
+        txtThursdayLunch.setText("" + role.getNumberPerShift(thursdayLunch));
+        txtThursdayDinner.setText("" + role.getNumberPerShift(thursdayDinner));
+        txtFridayLunch.setText("" + role.getNumberPerShift(fridayLunch));
+        txtFridayDinner.setText("" + role.getNumberPerShift(fridayDinner));
+        txtSaturdayLunch.setText("" + role.getNumberPerShift(saturdayLunch));
+        txtSaturdayDinner.setText("" + role.getNumberPerShift(saturdayDinner));
+        txtSundayLunch.setText("" + role.getNumberPerShift(sundayLunch));
+        txtSundayDinner.setText("" + role.getNumberPerShift(sundayDinner));
     }
 }
