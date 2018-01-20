@@ -60,6 +60,9 @@ public class Controller {
     @FXML
     SpreadsheetView spreadsheetView;
 
+    @FXML
+    Menu mnuOpenRecent;
+
 
     /*
     -------------------------------------------------------------------------------------------------------
@@ -120,7 +123,6 @@ public class Controller {
     protected void mnuOpenAddRoleForm() {
 
         //TODO: If role name is updated, employees are no longer associated with the role. Need to fix
-        //TODO: Delete button
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addRoleForm.fxml"));
             Parent form = loader.load();
@@ -142,6 +144,7 @@ public class Controller {
 
     @FXML
     protected void mnuOpenManageRolesForm() {
+        //TODO: Delete button
         int height = 450;
         int width = 600;
 
@@ -425,18 +428,8 @@ public class Controller {
     @FXML
     protected void mnuOpenSchedule() {
         fileManager.openExcelFile("Select the schedule Excel file");
-        spreadsheetManager.setRoles(fileManager.getRoles());
-        GridBase grid = spreadsheetManager.getGridFromSpreadsheet(fileManager.getExcelFile());
-        if(grid == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,
-                    "Something went wrong while opening the file.",
-                    ButtonType.OK);
-            alert.showAndWait();
-            return;
-        }
-        spreadsheetView.setGrid(grid);
-        unlockScheduleControls();
-
+        openScheduleFile(fileManager.getExcelFile());
+        setRecentFiles();
     }
 
     @FXML
@@ -522,6 +515,35 @@ public class Controller {
         chkboxEditMode.setDisable(false);
     }
 
+    public void setRecentFiles() {
+        mnuOpenRecent.getItems().clear();
+        for(File file : fileManager.getRecentFiles()) {
+            MenuItem fileMenuOption = new MenuItem(file.getName());
+            fileMenuOption.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    openScheduleFile(file);
+                }
+            });
+            mnuOpenRecent.getItems().add(fileMenuOption);
+        }
+    }
+
+
+    public void openScheduleFile(File excelFile) {
+        spreadsheetManager.setRoles(fileManager.getRoles());
+        GridBase grid = spreadsheetManager.getGridFromSpreadsheet(excelFile);
+        if(grid == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Something went wrong while opening the file.",
+                    ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+        spreadsheetView.setGrid(grid);
+        unlockScheduleControls();
+    }
+
     /**
      * This will open a new window on top of the main window. Streamlines the opening of other FXML forms.
      * Only use this method if no additional information or objects need to be sent to the FXML controller.
@@ -571,6 +593,8 @@ public class Controller {
         btnSaveSchedule.setDisable(true);
         chkboxEditMode.setDisable(true);
         dpSelectScheduleWeek.setShowWeekNumbers(true);
+
+        setRecentFiles();
 
         // populate shifts
         shifts = new ArrayList<>();

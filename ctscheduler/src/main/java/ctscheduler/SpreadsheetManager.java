@@ -111,6 +111,7 @@ class SpreadsheetManager {
                     // both roleRowIndex and roleRowIndex + 1.
                     if(rowNum == roleRowIndex || rowNum == roleRowIndex + 1) {
                         css += "-fx-background-color: " + currRole.getColorHex() + ";";
+                        css += "-fx-text-alignment: center;";
                         css += "-fx-alignment: center;";
                     }
 
@@ -119,6 +120,7 @@ class SpreadsheetManager {
                     // Some cells in the first column such as role names need center alignment, but that is
                     // set above and is the reason for checking if the css already includes center alignment.
                     if(columnNum != 0 && !css.contains("-fx-alignment: center;")) {
+                        css += "-fx-text-alignment: center;";
                         css += "-fx-alignment: center;";
                     }
 
@@ -127,7 +129,9 @@ class SpreadsheetManager {
                     // spreadsheet from Apache POI.
                     if(rowNum == 0) {
                         columnSpan = columnCount;
+                        css += "-fx-text-alignment: center;";
                         css += "-fx-alignment: center;";
+                        css += "-fx-underline: true;";
                         css += "-fx-effect:dropshadow(gaussian, black, 10, 0.1, 0, 0);";
                     }
 

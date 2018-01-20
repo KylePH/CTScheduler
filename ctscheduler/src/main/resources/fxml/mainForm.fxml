@@ -28,7 +28,7 @@
           <items>
             <MenuItem mnemonicParsing="false" onAction="#mnuNewSchedule" text="New" />
             <MenuItem mnemonicParsing="false" onAction="#mnuOpenSchedule" text="Open Schedule..." />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <Menu fx:id="mnuOpenRecent" mnemonicParsing="false" text="Open Recent" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#mnuSaveSchedule" text="Save" />
             <MenuItem mnemonicParsing="false" onAction="#mnuSaveScheduleAs" text="Save As…" />

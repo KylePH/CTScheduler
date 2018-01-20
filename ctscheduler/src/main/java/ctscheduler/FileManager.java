@@ -11,9 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class FileManager {
 
@@ -132,15 +130,31 @@ public class FileManager {
         if(file == null) {
             return;
         }
-        excelFile = file; // set the excelFile global variable to this.
+
+        excelFile = file; // set the excelFile global variable to the chosen file.
+
         recentFiles.add(file);
-        List<String> temp = new ArrayList<>();
-        if(!recentFiles.isEmpty()) {
-            for (File recentFile : recentFiles) {
-                temp.add(recentFile.getAbsolutePath());
+
+        ArrayList<File> nonDupeList = new ArrayList<>();
+
+        // Get rid of duplicates in the recentFiles List
+        boolean add = true;
+        for(File f : recentFiles) {
+            for(File f2 : nonDupeList) {
+                if(f2.getAbsolutePath().equals(f.getAbsolutePath())) {
+                    add = false;
+                }
+            }
+            if(add) {
+                nonDupeList.add(f);
+            } else {
+                add = true;
             }
         }
-        saveDataHelper(recentFilesTxt, temp);
+        recentFiles.clear();
+        recentFiles.addAll(nonDupeList);
+
+        saveData();
     }
 
     // TODO: Save scheduleDirectory somewhere in settings.txt
@@ -164,12 +178,18 @@ public class FileManager {
         saveDataHelper(settingsTxt, settings);
         saveDataHelper(employeesTxt, objListToStringList(employees));
         saveDataHelper(rolesTxt, objListToStringList(roles));
+        saveDataHelper(recentFilesTxt, objListToStringList(recentFiles));
+
     }
 
     private List<String> objListToStringList(List<?> list) {
         List<String> li = new ArrayList<>();
         for(Object o : list) {
-            li.add(o.toString());
+            if(o instanceof File) {
+                li.add(((File) o).getAbsolutePath());
+            } else {
+                li.add(o.toString());
+            }
         }
         return li;
     }
@@ -431,6 +451,10 @@ public class FileManager {
      */
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public List<File> getRecentFiles() {
+        return recentFiles;
     }
 
     /**
