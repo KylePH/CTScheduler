@@ -46,6 +46,7 @@ class SpreadsheetManager {
         int columnCount = 0;
 
         // Set rowCount and columnCount to the furthest cell/row indices that contain text in the Excel spreadsheet.
+        // Basically getting the smallest bounds for the spreadsheet without eliminating any data.
         for(Row row : sheet) {
             for(Cell cell : row) {
                 if(!formatter.formatCellValue(cell).equals("")) {
@@ -61,7 +62,7 @@ class SpreadsheetManager {
 
         // Return the values retrieved from a zero-indexed environment to their regular values
         rowCount++;
-        //columnCount++;
+        //columnCount++; Took this out because the last column contains a "key" for colors that aren't displayed yet.
 
         // Initialize the GridBase with the rowCount and columnCount found above.
         GridBase grid = new GridBase(rowCount, columnCount);
@@ -70,7 +71,7 @@ class SpreadsheetManager {
 
         // Specifies the row that a role/position "header" is on. I keep track of this because the whole
         // row and the row below it needs to be a certain color. (role.getColorHex())
-        int roleRow = -5;
+        int roleRowIndex = -5;
 
         // If a cell's content matches a role name then this will be set to that role.
         Role currRole = null;
@@ -80,37 +81,44 @@ class SpreadsheetManager {
         for(int rowNum = 0; rowNum < grid.getRowCount(); rowNum++) {
 
             final ObservableList<SpreadsheetCell> rowCells = FXCollections.observableArrayList();
+
+            // Get a row from the Excel spreadsheet.
             Row row = sheet.getRow(rowNum);
 
-            if(row != null) {
+            if(row != null) { // Row has cells that contain some data.
 
                 for (int columnNum = 0; columnNum < grid.getColumnCount(); columnNum++) {
 
-                    Cell cell = row.getCell(columnNum);
-                    String cellContent = formatter.formatCellValue(cell);
+                    Cell cell = row.getCell(columnNum); // Get a cell from the row in the Excel spreadsheet.
+                    String cellContent = formatter.formatCellValue(cell); // Get its contents in String form.
                     String css = ""; // The CSS to be applied to the cell.
-                    int rowSpan = 1;
-                    int columnSpan = 1;
+                    int rowSpan = 1; // How many rows the cell will cover.
+                    int columnSpan = 1; // How many columns the cell will cover.
 
                     // Check to see if the cell content matches a Role name.
                     for(Role role : roles) {
                         if(cellContent.equalsIgnoreCase(role.getName())) {
                             // If it does, the role name should be displayed in a cell that spans 2 rows.
                             rowSpan = 2;
-                            // Set the row the role is on and the Role to a local variable.
-                            roleRow = rowNum;
+                            // Set the index of the row that the role is on and the Role object to local variables.
+                            roleRowIndex = rowNum;
                             currRole = role;
                         }
                     }
 
                     // Set the CSS for cells falling on the same row as the cell that contains a role name.
-                    if(rowNum == roleRow || rowNum == roleRow + 1) {
+                    // The cell that contains a role name spans 2 cells, which is the reason for checking
+                    // both roleRowIndex and roleRowIndex + 1.
+                    if(rowNum == roleRowIndex || rowNum == roleRowIndex + 1) {
                         css += "-fx-background-color: " + currRole.getColorHex() + ";";
                         css += "-fx-alignment: center;";
                     }
 
-                    // Set the CSS for all cells except for the first column.
-                    if(columnNum != 0 && !css.endsWith("-fx-alignment: center;")) {
+                    // Set the CSS for all cells except for the first column. The first column lists the
+                    // names of employees and should all have left alignment, which is the default style.
+                    // Some cells in the first column such as role names need center alignment, but that is
+                    // set above and is the reason for checking if the css already includes center alignment.
+                    if(columnNum != 0 && !css.contains("-fx-alignment: center;")) {
                         css += "-fx-alignment: center;";
                     }
 
@@ -147,7 +155,7 @@ class SpreadsheetManager {
                 // Add a complete row of cells to the gridRows list.
                 gridRows.add(rowCells);
             } else {
-                // Row is null, load it with blank cells.
+                // Excel spreadsheet row is null, load the list with blank cells.
                 for(int columnNum = 0; columnNum < grid.getColumnCount(); columnNum++) {
                     rowCells.add(
                             SpreadsheetCellType.STRING.createCell(
